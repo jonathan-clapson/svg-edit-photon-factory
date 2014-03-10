@@ -46,7 +46,7 @@ var fill_active = 0;
 				canvas_expansion: 3,
 				dimensions: [640,480],
 				initFill: {
-					color: 'FF0000',  // solid red
+					color: 'FFFFFF',  // solid red
 					opacity: 1
 				},
 				initStroke: {
