@@ -15,12 +15,14 @@
 // 2) browser.js
 // 3) svgcanvas.js
 
+var fill_active = 0;
+
 (function() {
 
 	document.addEventListener("touchstart", touchHandler, true);
-  document.addEventListener("touchmove", touchHandler, true);
-  document.addEventListener("touchend", touchHandler, true);
-  document.addEventListener("touchcancel", touchHandler, true);
+	document.addEventListener("touchmove", touchHandler, true);
+	document.addEventListener("touchend", touchHandler, true);
+	document.addEventListener("touchcancel", touchHandler, true);
 
 	if(!window.svgEditor) window.svgEditor = function($) {
 		var svgCanvas;
@@ -585,7 +587,7 @@
 
 			var togglePathEditMode = function(editmode, elems) {
 				$('#path_node_panel').toggle(editmode);
-				$('#tools_bottom_2,#tools_bottom_3').toggle(!editmode);
+//HERE:			$('#tools_bottom_2,#tools_bottom_3').toggle(!editmode);
 				if(editmode) {
 					// Change select icon
 					$('.tool_button_current').removeClass('tool_button_current').addClass('tool_button');
@@ -3363,7 +3365,7 @@
 
 			// TODO: go back to the color boxes having white background-color and then setting
 			//       background-image to none.png (otherwise partially transparent gradients look weird)
-			var colorPicker = function(elem) {
+			/*var colorPicker = function(elem) {
 				var picker = elem.attr('id') == 'stroke_color' ? 'stroke' : 'fill';
 // 				var opacity = (picker == 'stroke' ? $('#stroke_opacity') : $('#fill_opacity'));
 				var paint = paintBox[picker].paint;
@@ -3390,6 +3392,27 @@
 					function(p) {
 						$('#color_picker').hide();
 					});
+			};*/
+			var colorPicker = function(elem) {
+				var picker = elem.attr('id') == 'stroke_color' ? 'stroke' : 'fill';
+				var paint = paintBox[picker].paint;
+				var pos = elem.offset();
+				
+				if (fill_active == 0) {
+					paint.type = "solidColor";
+					paint.solidColor = "#FFFFFF";
+					paint.alpha = 100;
+					paintBox[picker].setPaint(paint);
+					svgCanvas.setPaint(picker, paint);
+					fill_active = 1;
+				} else {
+					paint.type = "none";
+					paint.solidColor = "#000000";					
+					paint.alpha = 0;
+					paintBox[picker].setPaint(paint);
+					svgCanvas.setPaint(picker, paint);
+					fill_active = 0;
+				}
 			};
 
 			var updateToolButtonState = function() {
@@ -3569,7 +3592,7 @@
 			};
 
 			paintBox.fill = new PaintBox('#fill_color', 'fill');
-			paintBox.stroke = new PaintBox('#stroke_color', 'stroke');
+			//paintBox.stroke = new PaintBox('#stroke_color', 'stroke');
 
 			$('#stroke_width').val(curConfig.initStroke.width);
 			$('#group_opacity').val(curConfig.initOpacity * 100);
@@ -3579,13 +3602,13 @@
 			test_el.setAttribute('style','vector-effect:non-scaling-stroke');
 			var supportsNonSS = (test_el.style.vectorEffect === 'non-scaling-stroke');
 			test_el.removeAttribute('style');
-			var svgdocbox = paintBox.fill.rect.ownerDocument;
+			/*var svgdocbox = paintBox.fill.rect.ownerDocument;
 			// Use this to test support for blur element. Seems to work to test support in Webkit
 			var blur_test = svgdocbox.createElementNS('http://www.w3.org/2000/svg', 'feGaussianBlur');
 			if(typeof blur_test.stdDeviationX === "undefined") {
 				$('#tool_blur').hide();
 			}
-			$(blur_test).remove();
+			$(blur_test).remove();*/
 
 			// Test for zoom icon support
 			(function() {
