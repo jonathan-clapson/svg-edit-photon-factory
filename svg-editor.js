@@ -15,6 +15,7 @@
 // 2) browser.js
 // 3) svgcanvas.js
 
+/* FIXME: this is wrong, need to detect selected color and current color. Determine what to do from those */
 var fill_active = 0;
 
 (function() {
