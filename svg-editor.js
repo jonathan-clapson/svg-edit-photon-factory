@@ -783,7 +783,7 @@ var fill_active = 0;
 				// In the event a gradient was flipped:
 				if(selectedElement && mode === "select") {
 					paintBox.fill.update();
-					paintBox.stroke.update();
+					//paintBox.stroke.update();
 				}
 
 				svgCanvas.runExtensions("elementChanged", {
@@ -1434,11 +1434,11 @@ var fill_active = 0;
 						break;
 					default:
 						paintBox.fill.update(true);
-						paintBox.stroke.update(true);
+						//paintBox.stroke.update(true);
 						//console.log(paintBox.fill);
 
-						$('#stroke_width').val(selectedElement.getAttribute("stroke-width") || 1);
-						$('#stroke_style').val(selectedElement.getAttribute("stroke-dasharray")||"none");
+						//$('#stroke_width').val(selectedElement.getAttribute("stroke-width") || 1);
+						//$('#stroke_style').val(selectedElement.getAttribute("stroke-dasharray")||"none");
 
 						var attr = selectedElement.getAttribute("stroke-linejoin") || 'miter';
 
