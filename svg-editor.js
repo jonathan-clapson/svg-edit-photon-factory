@@ -3366,34 +3366,6 @@ var fill_active = 0;
 
 			// TODO: go back to the color boxes having white background-color and then setting
 			//       background-image to none.png (otherwise partially transparent gradients look weird)
-			/*var colorPicker = function(elem) {
-				var picker = elem.attr('id') == 'stroke_color' ? 'stroke' : 'fill';
-// 				var opacity = (picker == 'stroke' ? $('#stroke_opacity') : $('#fill_opacity'));
-				var paint = paintBox[picker].paint;
-				var title = (picker == 'stroke' ? 'Pick a Stroke Paint and Opacity' : 'Pick a Fill Paint and Opacity');
-				var was_none = false;
-				var pos = elem.offset();
-				$("#color_picker")
-					.draggable({cancel:'.jGraduate_tabs, .jGraduate_colPick, .jGraduate_gradPick, .jPicker', containment: 'window'})
-					.css(curConfig.colorPickerCSS || {'left': pos.left-140, 'bottom': 40})
-					.jGraduate(
-					{
-						paint: paint,
-						window: { pickerTitle: title },
-						images: { clientPath: curConfig.jGraduatePath },
-						newstop: 'inverse'
-					},
-					function(p) {
-						paint = new $.jGraduate.Paint(p);
-						paintBox[picker].setPaint(paint);
-						svgCanvas.setPaint(picker, paint);
-
-						$('#color_picker').hide();
-					},
-					function(p) {
-						$('#color_picker').hide();
-					});
-			};*/
 			var colorPicker = function(elem) {
 				var picker = elem.attr('id') == 'stroke_color' ? 'stroke' : 'fill';
 				var paint = paintBox[picker].paint;
@@ -3405,14 +3377,12 @@ var fill_active = 0;
 					paint.alpha = 100;
 					paintBox[picker].setPaint(paint);
 					svgCanvas.setPaint(picker, paint);
-					fill_active = 1;
 				} else {
 					paint.type = "none";
 					paint.solidColor = "#000000";					
 					paint.alpha = 0;
 					paintBox[picker].setPaint(paint);
 					svgCanvas.setPaint(picker, paint);
-					fill_active = 0;
 				}
 			};
 
@@ -3513,9 +3483,15 @@ var fill_active = 0;
 							var id = this.grad.id = 'gradbox_' + this.type;
 							fillAttr = "url(#" + id + ')';
 					}
-
-					this.rect.setAttribute('fill', fillAttr);
+					this.rect.setAttribute('fill', fillAttr);					
 					this.rect.setAttribute('opacity', opac);
+					/* FIXME: I'm sure theres a javascript way of doing this but I can't figure out how.This works though :S */
+					if (opac == 0) {
+						fill_active = 0;
+					}
+					else {
+						fill_active = 1;
+					}
 
 					if(apply) {
 						svgCanvas.setColor(this.type, paintColor, true);
@@ -4037,7 +4013,7 @@ var fill_active = 0;
 					{sel:'#tool_open', fn: clickOpen, evt: 'mouseup', key: ['O', true]},
 					{sel:'#tool_import', fn: clickImport, evt: 'mouseup'},
 					{sel:'#tool_source', fn: showSourceEditor, evt: 'click', key: ['U', true]},
-					{sel:'#tool_wireframe', fn: clickWireframe, evt: 'click', key: ['F', true]},
+					{sel:'#tool_wireframe', fn: clickWireframe, evt: 'click'},
 					{sel:'#tool_source_cancel,#svg_source_overlay,#tool_docprops_cancel,#tool_prefs_cancel', fn: cancelOverlays, evt: 'click', key: ['esc', false, false], hidekey: true},
 					{sel:'#tool_source_save', fn: saveSourceEditor, evt: 'click'},
 					{sel:'#tool_docprops_save', fn: saveDocProperties, evt: 'click'},
