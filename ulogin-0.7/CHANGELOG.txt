@@ -1,0 +1,28 @@
+Upgrade notes: The database schema has slightly changed in a backward-compatible way. If you are
+upgrading from a previous version of uLogin, you should make the following changes
+in order to get all the fixes and to accomodate new features:
+  - Increase "user"/"username" fields varchar length to 400 in tables ul_log and ul_logins
+  - Increase "password" field varchar length to 2048 in table ul_logins
+  - Increase "id" field varchar length to 128 in table ul_sessions
+  - All strings are ascii, except for user/usernames which are utf8
+    
+
+- Add support for server-side proxies and load balancers (see UL_PROXY_HEADER in config).
+- Add support for PBKDF2 as password hash (see UL_PWD_FUNC in config).
+- Add support for getting OpenID attributes in class ulOpenIdLoginBackend.
+- UL_BCRYPT_ROUNDS renamed to UL_PWD_ROUNDS (API break).
+- Overhaul of built-in username checking (API break)
+  - UL_ALPHANUMERIC_USER replaced by UL_USERNAME_CHECK
+  - When upgrading, adjust new default options based on your old config
+    to prevent locking out some of your existing users!
+- Make sure that only printable salts are produced.
+- Add support for Yahoo's special case in the OpenID backend
+- Make example.php unicode-aware
+- Give deprecation warning for PHP 5.2 in installCheck.php. PHP 5.2 is still supported in this version.
+- Fix: ulUtils::ValidateIP() always returns false.
+- Fix: ulUtils::GetRemoteIP() was not used everywhere where it should have been.
+- Fix: Nonce expiry broken on PHP 5.2 (DateTime serialization issue).
+- Fix: SMD5 and SSHA hash verification broken due to missing base64_decode().
+- Fix: Database creation scripts impose incorrect limits on username and password fields.
+- Fix: Database field limit for session ID can be too short for non-default PHP settings.
+- Fix: Wrong line endings in pdo/include.inc.php can cause PHP parse error.
