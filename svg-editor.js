@@ -60,7 +60,7 @@ var fill_active = 0;
 				langPath: 'locale/',
 				extPath: 'extensions/',
 				jGraduatePath: 'jgraduate/images/',
-				extensions: ['ext-markers.js','ext-connector.js', 'ext-eyedropper.js', 'ext-shapes.js', 'ext-imagelib.js','ext-grid.js'],
+				extensions: ['ext-markers.js','ext-connector.js', 'ext-shapes.js', 'ext-grid.js', 'ext-server_opensave.js'],
 				initTool: 'select',
 				wireframe: false,
 				colorPickerCSS: null,
