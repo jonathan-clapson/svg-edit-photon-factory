@@ -24,8 +24,11 @@ if(isset($_POST['filename']) && strlen($_POST['filename']) > 0) {
 }
 
 if($suffix == '.svg') {
-	$mime = 'image/svg+xml';
+	//$mime = 'image/svg+xml';
 	$contents = rawurldecode($_POST['output_svg']);
+	$handle = fopen($file, "w");
+	fprintf($handle, "%s\n", $contents);
+	fclose($handle);
 } else {
 	$mime = 'image/png';
 	$contents = $_POST['output_png'];
@@ -33,12 +36,12 @@ if($suffix == '.svg') {
 	$contents = base64_decode(substr($contents, $pos));
 }
 
- header("Cache-Control: public");
+ /*header("Cache-Control: public");
  header("Content-Description: File Transfer");
  header("Content-Disposition: attachment; filename=" . $file);
  header("Content-Type: " .  $mime);
  header("Content-Transfer-Encoding: binary");
  
- echo $contents;
+ echo $contents;*/
  
 ?>
