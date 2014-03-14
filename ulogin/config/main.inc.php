@@ -174,7 +174,7 @@ define('UL_PROXY_HEADER', '');
 // by a malicious user to gain non-public information.
 // Enable during development and testing, disable for
 // for production websites.
-define('UL_DEBUG', true);
+define('UL_DEBUG', false);
 define('UL_GENERIC_ERROR_MSG', 'An error occured. Please try again or contact the administrator.');
 
 // Set to the upper most root path of the website. This is only used to mask

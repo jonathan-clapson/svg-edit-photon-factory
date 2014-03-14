@@ -14,7 +14,7 @@ require_once('ulogin/main.inc.php');
 // Start a secure session if none is running
 if (!sses_running())
 	sses_start();
-
+	
 // We define some functions to log in and log out,
 // as well as to determine if the user is logged in.
 // This is needed because uLogin does not handle access control
@@ -23,6 +23,7 @@ if (!sses_running())
 function isAppLoggedIn(){
 	return isset($_SESSION['uid']) && isset($_SESSION['username']) && isset($_SESSION['loggedIn']) && ($_SESSION['loggedIn']===true);
 }
+
 
 function appLogin($uid, $username, $ulogin){
 	$_SESSION['uid'] = $uid;
@@ -82,7 +83,7 @@ $ulogin = new uLogin('appLogin', 'appLoginFail');
 // also based on the logon state, but the application logic might change whether
 // we are logged in or not.
 
-if (isAppLoggedIn()){
+if (isAppLoggedIn()){	
 	if ($action=='delete')	{	// We've been requested to delete the account
 
 		// Delete account
@@ -110,10 +111,10 @@ if (isAppLoggedIn()){
 			// We store it in the session if the user wants to be remembered. This is because
 			// some auth backends redirect the user and we will need it after the user
 			// arrives back.
-      if (isset($_POST['autologin']))
-        $_SESSION['appRememberMeRequested'] = true;
-      else
-        unset($_SESSION['appRememberMeRequested']);
+			if (isset($_POST['autologin']))
+				$_SESSION['appRememberMeRequested'] = true;
+			else
+				unset($_SESSION['appRememberMeRequested']);
 
 			// This is the line where we actually try to authenticate against some kind
 			// of user database. Note that depending on the auth backend, this function might
@@ -147,24 +148,32 @@ if (isAppLoggedIn()){
 // Nothing fancy, except where we create the 'login'-nonce towards the end
 // while generating the login form.
 
-header('Content-Type: text/html; charset=UTF-8');  
-
 // This inserts a few lines of javascript so that we can debug session problems.
 // This will be very usefull if you experience sudden session drops, but you'll
 // want to avoid using this on a live website.
-ulLog::ShowDebugConsole();
+// THIS BREAKS REDIRECTS
+//ulLog::ShowDebugConsole();
 
 if (isAppLoggedIn()){
-	?>
-		<?php echo ($msg);?>
-		<h3>This is a protected page. You are logged in, <?php echo($_SESSION['username']);?>.</h3>
-		<form action="example.php" method="POST"><input type="hidden" name="action" value="refresh"><input type="submit" value="Refresh page"></form>
-		<form action="example.php" method="POST"><input type="hidden" name="action" value="logout"><input type="submit" value="Logout"></form>
-		<form action="example.php" method="POST"><input type="hidden" name="action" value="delete"><input type="submit" value="Delete account"></form>
-	<?php
-} else {
+$host  = $_SERVER['HTTP_HOST'];
+	$uri  = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+	$extra = 'svg-edit/svg-editor.html';
+	header("Location: http://$host$uri/$extra");
+	die();
+	
+	echo "redirect to http://" . $host . $uri . "/" . $extra . "failed";
+
+	echo ($msg);
 ?>
-	<?php echo ($msg);?>
+	<h3>This is a protected page. You are logged in, <?php echo($_SESSION['username']);?>.</h3>
+	<form action="example.php" method="POST"><input type="hidden" name="action" value="refresh"><input type="submit" value="Refresh page"></form>
+	<form action="example.php" method="POST"><input type="hidden" name="action" value="logout"><input type="submit" value="Logout"></form>
+	<form action="example.php" method="POST"><input type="hidden" name="action" value="delete"><input type="submit" value="Delete account"></form>
+<?php
+} else {
+	header('Content-Type: text/html; charset=UTF-8');  
+	echo ($msg);
+?>
 	<h3>uLogin authentication example</h3>
 
 	<form action="example.php" method="POST">

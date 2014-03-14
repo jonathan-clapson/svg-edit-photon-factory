@@ -12,9 +12,14 @@ function endsWith($haystack, $needle)
   return (substr($haystack, -$length) === $needle);
 }
 
-$handle = opendir(dirname(__FILE__));
+$dirname = dirname(__FILE__);
+$handle = opendir($dirname);
 while (false !== ($file = readdir($handle))) {
-  if (!is_dir($file) && endsWith($file, '.inc.php'))
+  if (!is_dir($dirname.$file))
+  
+  
+  if( endsWith($file, '.inc.php'))
+  
     require_once($file);
 }
 closedir($handle);
