@@ -134,7 +134,7 @@
 		<span>SVG-Edit</span>
 		<div id="logo"></div>
 		<div class="dropdown"></div>
-	</div>
+	</div>		
 		
 	<div id="main_menu"> 
 	
@@ -184,7 +184,6 @@
 		<button id="tool_prefs_option">
 			Editor Options
 		</button>
-
 
 	</div>
 </div>
@@ -388,7 +387,17 @@
 		<div class="tool_button" id="tool_openclose_path" title="Open/close sub-path"></div>
 		<div class="tool_button" id="tool_add_subpath" title="Add sub-path"></div>
 	</div>
+	
+	<?php /* FIXME: make new panel */ ?>
+	<div id="history_panel">
+	<div id="main_icon" class="tool_button" title="Logout">
+		<!--<span>Logout</span>-->
+		<a href="../logout.php">Logout</a>
+		<div id="logo"></div>
+	</div>
+	</div>
 </div> <!-- tools_top -->
+	
 	<div id="cur_context_panel">
 		
 	</div>
