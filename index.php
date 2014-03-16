@@ -76,7 +76,6 @@ $action = @$_POST['action'];
 // 'appLoginFail' a few lines above).
 $ulogin = new uLogin('appLogin', 'appLoginFail');
 
-
 // First we handle application logic. We make two cases,
 // one for logged in users and one for anonymous users.
 // We will handle presentation after our logic because what we present is
@@ -155,13 +154,11 @@ if (isAppLoggedIn()){
 //ulLog::ShowDebugConsole();
 
 if (isAppLoggedIn()){
-$host  = $_SERVER['HTTP_HOST'];
+	$host  = $_SERVER['HTTP_HOST'];
 	$uri  = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
 	$extra = 'svg-edit/svg-editor.html';
 	header("Location: http://$host$uri/$extra");
 	die();
-	
-	echo "redirect to http://" . $host . $uri . "/" . $extra . "failed";
 
 	echo ($msg);
 ?>
