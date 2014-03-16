@@ -389,7 +389,7 @@
 	</div>
 	
 	<?php /* FIXME: make new panel */ ?>
-	<div id="history_panel">
+	<div id="history_panel" style="float:right">
 	<div id="main_icon" class="tool_button" title="Logout">
 		<!--<span>Logout</span>-->
 		<a href="../logout.php">Logout</a>
