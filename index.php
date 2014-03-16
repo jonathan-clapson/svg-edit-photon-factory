@@ -44,24 +44,18 @@ function appLogin($uid, $username, $ulogin){
 		if ( !$ulogin->SetAutologin($username, false))
 			echo 'cannot disable autologin<br>';
 	}
+	
+	$host  = $_SERVER['HTTP_HOST'];
+	$uri  = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+	$extra = 'svg-edit/svg-editor.html';
+	header("Location: http://$host$uri/$extra");
+	die();	
 }
 
 function appLoginFail($uid, $username, $ulogin){
 	// Note, in case of a failed login, $uid, $username or both
 	// might not be set (might be NULL).
 	echo 'login failed<br>';
-}
-
-function appLogout(){
-  // When a user explicitly logs out you'll definetely want to disable
-  // autologin for the same user. For demonstration purposes,
-  // we don't do that here so that the autologin function remains
-  // easy to test.
-  //$ulogin->SetAutologin($_SESSION['username'], false);
-
-	unset($_SESSION['uid']);
-	unset($_SESSION['username']);
-	unset($_SESSION['loggedIn']);
 }
 
 // Store the messages in a variable to prevent interfering with headers manipulation.
@@ -76,71 +70,54 @@ $action = @$_POST['action'];
 // 'appLoginFail' a few lines above).
 $ulogin = new uLogin('appLogin', 'appLoginFail');
 
+
 // First we handle application logic. We make two cases,
 // one for logged in users and one for anonymous users.
 // We will handle presentation after our logic because what we present is
 // also based on the logon state, but the application logic might change whether
 // we are logged in or not.
 
-if (isAppLoggedIn()){	
-	if ($action=='delete')	{	// We've been requested to delete the account
-
-		// Delete account
-		if ( !$ulogin->DeleteUser( $_SESSION['uid']) )
-			$msg = 'account deletion failure';
+// if log in is requested
+if (isset($_POST['user']) && isset($_POST['pwd'])) {
+	// Here we verify the nonce, so that only users can try to log in
+	// to whom we've actually shown a login page. The first parameter
+	// of Nonce::Verify needs to correspond to the parameter that we
+	// used to create the nonce, but otherwise it can be anything
+	// as long as they match.
+	if (isset($_POST['nonce']) && ulNonce::Verify('login', $_POST['nonce'])){
+		// We store it in the session if the user wants to be remembered. This is because
+		// some auth backends redirect the user and we will need it after the user
+		// arrives back.
+		if (isset($_POST['autologin']))
+			$_SESSION['appRememberMeRequested'] = true;
 		else
-			$msg = 'account deleted ok';
+			unset($_SESSION['appRememberMeRequested']);
 
-		// Logout
-		appLogout();
-	} else if ($action == 'logout'){ // We've been requested to log out
-		// Logout
-		appLogout();
-		$msg = 'logged out';
-	}
-} else {
-	// We've been requested to log in
-	if ($action=='login') {
-		// Here we verify the nonce, so that only users can try to log in
-		// to whom we've actually shown a login page. The first parameter
-		// of Nonce::Verify needs to correspond to the parameter that we
-		// used to create the nonce, but otherwise it can be anything
-		// as long as they match.
-		if (isset($_POST['nonce']) && ulNonce::Verify('login', $_POST['nonce'])){
-			// We store it in the session if the user wants to be remembered. This is because
-			// some auth backends redirect the user and we will need it after the user
-			// arrives back.
-			if (isset($_POST['autologin']))
-				$_SESSION['appRememberMeRequested'] = true;
-			else
-				unset($_SESSION['appRememberMeRequested']);
+		// This is the line where we actually try to authenticate against some kind
+		// of user database. Note that depending on the auth backend, this function might
+		// redirect the user to a different page, in which case it does not return.
+		$ulogin->Authenticate($_POST['user'],  $_POST['pwd']);
+		if ($ulogin->IsAuthSuccess()){
+			// Since we have specified callback functions to uLogin,
+			// we don't have to do anything here.
+		}
+	}else
+		$msg = 'invalid nonce';
 
-			// This is the line where we actually try to authenticate against some kind
-			// of user database. Note that depending on the auth backend, this function might
-			// redirect the user to a different page, in which case it does not return.
-			$ulogin->Authenticate($_POST['user'],  $_POST['pwd']);
-			if ($ulogin->IsAuthSuccess()){
-				// Since we have specified callback functions to uLogin,
-				// we don't have to do anything here.
-			}
-		}else
-			$msg = 'invalid nonce';
+} else if ($action=='autologin'){	// We were requested to use the remember-me function for logging in.
+	// Note, there is no username or password for autologin ('remember me')
+	$ulogin->Autologin();
+	if (!$ulogin->IsAuthSuccess())
+		$msg = 'autologin failure';
+	else
+		$msg = 'autologin ok';
 
-	} else if ($action=='autologin'){	// We were requested to use the remember-me function for logging in.
-		// Note, there is no username or password for autologin ('remember me')
-		$ulogin->Autologin();
-		if (!$ulogin->IsAuthSuccess())
-			$msg = 'autologin failure';
-		else
-			$msg = 'autologin ok';
-
-	} else if ($action=='create'){	// We were requested to try to create a new acount.
-		// New account
-		if ( !$ulogin->CreateUser( $_POST['user'],  $_POST['pwd']) )
-			$msg = 'account creation failure';
-		else
-			$msg = 'account created';
-	}
+} else if ($action=='create'){	// We were requested to try to create a new acount.
+	// New account
+	if ( !$ulogin->CreateUser( $_POST['user'],  $_POST['pwd']) )
+		$msg = 'account creation failure';
+	else
+		$msg = 'account created';
 }
 
 // Now we handle the presentation, based on whether we are logged in or not.
@@ -153,86 +130,56 @@ if (isAppLoggedIn()){
 // THIS BREAKS REDIRECTS
 //ulLog::ShowDebugConsole();
 
-if (isAppLoggedIn()){
-	$host  = $_SERVER['HTTP_HOST'];
-	$uri  = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-	$extra = 'svg-edit/svg-editor.html';
-	header("Location: http://$host$uri/$extra");
-	die();
+header('Content-Type: text/html; charset=UTF-8');  
+echo ($msg);
 
-	echo ($msg);
 ?>
-	<h3>This is a protected page. You are logged in, <?php echo($_SESSION['username']);?>.</h3>
-	<form action="example.php" method="POST"><input type="hidden" name="action" value="refresh"><input type="submit" value="Refresh page"></form>
-	<form action="example.php" method="POST"><input type="hidden" name="action" value="logout"><input type="submit" value="Logout"></form>
-	<form action="example.php" method="POST"><input type="hidden" name="action" value="delete"><input type="submit" value="Delete account"></form>
-<?php
-} else {
-	header('Content-Type: text/html; charset=UTF-8');  
-	echo ($msg);
-?>
-	<h3>uLogin authentication example</h3>
+<html>
+<head>
+<title>Login</title>
+</head>
+<h3>uLogin authentication example</h3>
 
-	<form action="example.php" method="POST">
-	<table>
+<a href="createaccount.php">Create New Account</a>
 
-	<tr>
-		<td>
-			Username:
-		</td>
-		<td>
-			<input type="text" name="user">
-		</td>
-	</tr>
+<form action="login.php" method="POST">
+<table>
 
-	<tr>
-		<td>
-			Password:
-		</td>
-		<td>
-			<input type="password" name="pwd">
-		</td>
-	</tr>
+<tr>
+	<td>
+		Username:
+	</td>
+	<td>
+		<input type="text" name="user">
+	</td>
+</tr>
 
-	<tr>
-		<td>
-			Remember me:
-		</td>
-		<td>
-			<input type="checkbox" name="autologin" value="1">
-		</td>
-	</tr>
+<tr>
+	<td>
+		Password:
+	</td>
+	<td>
+		<input type="password" name="pwd">
+	</td>
+</tr>
 
-    <tr>
-		<td>
-			Action:
-		</td>
-		<td>
-			<select name="action">
-			<option>login</option>
-			<option>autologin</option>
-			<option>create</option>
-			</select>
-		</td>
-	</tr>
+<tr>
+	<td>
+		Remember me:
+	</td>
+	<td>
+		<input type="checkbox" name="autologin" value="1">
+	</td>
+</tr>
 
-	<tr>
-		<td>
-			Nonce:
-		</td>
-		<td>
-			<input type="text" id="nonce" name="nonce" value="<?php echo ulNonce::Create('login');?>">
-		</td>
-	</tr>
+<input type="hidden" id="nonce" name="nonce" value="<?php echo ulNonce::Create('login');?>">
 
-	<tr>
-		<td>
-		<input type="submit">
-		</td>
-	</tr>
+<tr>
+	<td>
+	<input type="submit">
+	</td>
+</tr>
 
-	</table>
-	</form>
-<?php
-}
-?>
+</table>
+</form>
+</html>
