@@ -57,7 +57,7 @@ if ( isset( $_POST['submit'] ) ) {
 				trigger_error('Database connection failed: '  . $conn->connect_error, E_USER_ERROR);
 			}
 			/* FIXME: get the correct one liner in here */
-			/* INSERT INTO ul_userinfo (id, email) SELECT id, 'abc@xyz.com' FROM ul_logins WHERE ul_logins.username = ?; */			
+			/* INSERT INTO ul_userinfo (id, email) SELECT id, 'abc@xyz.com' FROM ul_logins WHERE ul_logins.username = 'jonathan'; */			
 			$stmt = $conn->prepare('INSERT INTO ul_userinfo (id, email) SELECT id, ? FROM ul_logins WHERE ul_logins.username = ?');
 			$stmt->bind_param('ss',$email, $user);
 			$stmt->execute();			
@@ -87,7 +87,7 @@ Please fill out the following form to create a new user. All details are require
 <tr><td>Confirm Password:</td><td><input type="password" name="cpwd"></td></tr>
 <tr><td>Email:</td><td><input type="text" name="email"></td></tr>
 
-<tr><td>Nonce:</td><td><input type="hidden" id="nonce" name="nonce" value="<?php echo ulNonce::Create('login');?>"></td></tr>
+<input type="hidden" id="nonce" name="nonce" value="<?php echo ulNonce::Create('login');?>"></td></tr>
 <tr><td><input type="submit" name="submit"></td></tr>
 
 </table>
