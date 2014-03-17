@@ -47,7 +47,7 @@ function appLogin($uid, $username, $ulogin){
 	
 	$host  = $_SERVER['HTTP_HOST'];
 	$uri  = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-	$extra = 'svg-edit/svg-editor.html';
+	$extra = 'svg-edit/svg-editor.php';
 	header("Location: http://$host$uri/$extra");
 	die();	
 }
@@ -142,7 +142,7 @@ echo ($msg);
 
 <a href="createaccount.php">Create New Account</a>
 
-<form action="login.php" method="POST">
+<form action="index.php" method="POST">
 <table>
 
 <tr>
