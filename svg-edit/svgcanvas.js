@@ -115,7 +115,7 @@ var svgns = "http://www.w3.org/2000/svg",
 var curConfig = {
 	show_outside_canvas: true,
 	selectNew: true,
-	dimensions: [640, 480]
+	dimensions: [200000, 150000]
 };
 
 // Update config with new one if given
@@ -6668,8 +6668,8 @@ this.setBBoxZoom = function(val, editor_w, editor_h) {
 	var bb;
 	var calcZoom = function(bb) {
 		if(!bb) return false;
-		var w_zoom = Math.round((editor_w / bb.width)*100 * spacer)/100;
-		var h_zoom = Math.round((editor_h / bb.height)*100 * spacer)/100;	
+		var w_zoom = Math.round((editor_w / bb.width)*10000 * spacer)/10000;
+		var h_zoom = Math.round((editor_h / bb.height)*10000 * spacer)/10000;	
 		var zoomlevel = Math.min(w_zoom,h_zoom);
 		canvas.setZoom(zoomlevel);
 		return {'zoom': zoomlevel, 'bbox': bb};

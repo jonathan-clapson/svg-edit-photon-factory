@@ -45,7 +45,7 @@ var fill_active = 0;
 			curConfig = {
 				canvasName: 'default',
 				canvas_expansion: 3,
-				dimensions: [640,480],
+				dimensions: [200000,150000],
 				initFill: {
 					color: 'FFFFFF',  // solid red
 					opacity: 1
@@ -108,7 +108,7 @@ var fill_active = 0;
 					"URLloadFail": "Unable to load from URL",
 					"retrieving": 'Retrieving "%s" ...'
 				}
-			};
+			};			
 
 		var curPrefs = {}; //$.extend({}, defaultPrefs);
 
@@ -525,6 +525,18 @@ var fill_active = 0;
 				ui_context = 'toolbars',
 				orig_source = '',
 				paintBox = {fill: null, stroke:null};
+				
+			/* set initial zoom */
+			var canvas_width = svgcontent.getAttribute("width");
+			var canvas_height = svgcontent.getAttribute("height");
+			console.log(canvas_width + " " + canvas_height);
+			var scrbar = 15;
+			spacer = .95;
+			var bbox = {width:canvas_width, height:canvas_height, x:0, y:0};
+			console.log(workarea.width() + " " + workarea.height());
+			if (workarea.width() > 0 && workarea.height() > 0) {
+				svgCanvas.setBBoxZoom(bbox, workarea.width()-scrbar, workarea.height()-scrbar);
+			}
 
 			// This sets up alternative dialog boxes. They mostly work the same way as
 			// their UI counterparts, expect instead of returning the result, a callback
