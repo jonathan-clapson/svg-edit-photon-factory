@@ -20,7 +20,7 @@ svgEditor.addExtension("shapes", function() {
 	
 	// This populates the category list
 	var categories = {
-		basic: 'Wells',
+		wells: 'Wells',
 		object: 'Objects',
 	};
 	
@@ -48,7 +48,9 @@ svgEditor.addExtension("shapes", function() {
 		/* if the library hasn't been loaded into memory load it */
 		if(!lib) {			
 			$('#shape_buttons').html('Loading...');
+			console.log("File: extensions/shapelib/" + cat_id + ".json");
 			$.getJSON('extensions/shapelib/' + cat_id + '.json', function(result, textStatus) {
+				console.log("got " + result.data + " " + result.size + " " + result.fill);
 				cur_lib = library[cat_id] = {
 					data: result.data,
 					size: result.size,
@@ -57,6 +59,7 @@ svgEditor.addExtension("shapes", function() {
 				makeButtons(cat_id, result);
 				loadIcons();
 			});
+			console.log("here");
 		}
 		
 		/* set the current library to cat_id */
@@ -71,33 +74,74 @@ svgEditor.addExtension("shapes", function() {
 		var size = cur_lib.size || 300;
 		var fill = cur_lib.fill || false;
 		var off = size * .05;
-		var vb = [-off, -off, size + off*2, size + off*2].join(' ');
+		//var vb = [-off, -off, size + off*2, size + off*2].join(' ');
+		//var vb = [0, 0, 32000, size + off*2].join(' ');
 		var stroke = fill ? 0: (size/30);
 		
-		var shape_icon = new DOMParser().parseFromString(
-			'<svg xmlns="http://www.w3.org/2000/svg"><svg viewBox="' + vb + '"><path fill="'+(fill?'#333':'none')+'" stroke="#000000" stroke-width="' + stroke + '" /><\/svg><\/svg>',
-			'text/xml');
-
-		var width = 24;
-		var height = 24;
-		shape_icon.documentElement.setAttribute('width', width);
-		shape_icon.documentElement.setAttribute('height', height);
-		var svg_elem = $(document.importNode(shape_icon.documentElement,true));
+		var icon_width = 24;
+		var icon_height = 24;
 	
 		var data = shapes.data;
 		
 		cur_lib.buttons = [];
 	
 		for(var id in data) {
-			var path_d = data[id];
-			var icon = svg_elem.clone();
-			icon.find('path').attr('d', path_d);
+			var shape_d = data[id];
+			console.log("in_tag: " + shape_d);
 			
-			var icon_btn = icon.wrap('<div class="tool_button">').parent().attr({
+			// We need to change the svg string so that the viewport is set to the current svg width/height and then set the svg width/height to icon size
+			
+			// the first tag is the svg tag. It is ended by >. Seperate the svg tag from the rest
+			// we drop the > as we will put a viewbox in its place 
+			var svg_tag = shape_d.substring(0, shape_d.indexOf(">"));
+			var svg_remaining = shape_d.substring(shape_d.indexOf(">") + 1, shape_d.length);
+			
+			// split the svg tag based on " character
+			var parts = svg_tag.split('"');
+			
+			// remove the svg tag which is attached to the first element
+			parts[0] = parts[0].substring(parts[0].indexOf("g")+1, parts[0].length);
+			
+			// find the width and height elements, their arguments are in the next string
+			var svg_width;
+			var svg_height;
+			for (var i=0; i<parts.length; i++) {
+				// remove whitspace so formatting can't get in the way of detection
+				var part_no_whitespace = parts[i].replace(/\s+/g,"");
+				if (part_no_whitespace === "width=") {
+					svg_width = parts[i+1];
+					parts[i+1] = icon_width.toString();
+				}
+				if (part_no_whitespace === "height=") {
+					svg_height = parts[i+1];
+					parts[i+1] = icon_height.toString();
+				}
+			}
+			
+			// reassemble the svg tag
+			svg_tag = parts.join('"');
+			svg_tag = "<svg " + svg_tag;
+			
+			// we now need to add viewbox to end of svg tag using original svg coords
+			vb = [ 0, 0, svg_width, svg_height].join(" ");
+			svg_tag = svg_tag + ' viewbox="' + vb + '">';
+			
+			// reassemble the entire string
+			shape_d = svg_tag + svg_remaining;
+			console.log("final tag: " + shape_d);
+			
+			// create the icon
+			var shape_document = new DOMParser().parseFromString(shape_d, 'text/xml');
+			var svg_icon_elem = $(document.importNode(shape_document.documentElement,true));
+			
+			// set icon width and height
+			shape_document.documentElement.setAttribute('width', icon_width);
+			shape_document.documentElement.setAttribute('height', icon_height);
+			
+			var icon_btn = svg_icon_elem.wrap('<div class="tool_button">').parent().attr({
 				id: mode_id + '_' + id,
 				title: id
 			});
-			
 			
 			// Store for later use
 			cur_lib.buttons.push(icon_btn[0]);
@@ -172,6 +216,8 @@ svgEditor.addExtension("shapes", function() {
 				cur_shape_id = btn[0].id.substr((mode_id+'_').length);
 				current_d = cur_lib.data[cur_shape_id];
 				
+				console.log("current_d " + current_d);
+				
 				$('.tools_flyout').fadeOut();
 
 			});
@@ -242,6 +288,7 @@ svgEditor.addExtension("shapes", function() {
 			// Make sure shape uses absolute values
 			if(/[a-z]/.test(current_d)) {
 				current_d = cur_lib.data[cur_shape_id] = canv.pathActions.convertPath(cur_shape);
+				console.log("current_d fixed" + current_d);
 				cur_shape.setAttribute('d', current_d);
 				canv.pathActions.fixEnd(cur_shape);
 			}
