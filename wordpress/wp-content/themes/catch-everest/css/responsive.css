@@ -1,0 +1,451 @@
+/* =Responsive Structure
+----------------------------------------------- */
+
+@media screen and (min-width: 1190px) {
+.site {
+	margin: 40px auto;
+	margin: 4rem auto;
+    width: 1140px;
+	width: 114rem;
+}
+#primary {
+	width: 690px;
+}
+.page-links,
+.widget,
+blockquote,
+.site-content article,
+.site-content .site-navigation,
+#infinite-handle,
+.comments-title, #reply-title,
+#respond {
+	margin-bottom: 50px;
+	margin-bottom: 5rem;
+}
+#homepage-message {
+	margin-top: 50px;
+	margin-top: 5rem;
+}
+article.sticky .featured-post,
+.page-header,
+p,
+.featured-image,
+.entry-content table,
+.comment-content table,
+.widget.widget_catcheverest_social_widget,
+#content .searchform {
+	margin-bottom: 40px;
+	margin-bottom: 4rem;
+}
+#header-right .widget,
+.entry-header,
+article.format-aside .entry-title,
+.comments-area article header {
+	margin-bottom: 30px;
+	margin-bottom: 3rem;	
+}
+.page .entry-header,
+.widget-title,
+#header-right .widget.widget_catcheverest_social_widget, {
+	margin-bottom: 20px;
+	margin-bottom: 2rem;
+}
+#featured-post .entry-header {
+	margin-bottom: 0;
+}
+.container {
+	padding: 0 50px;
+	padding: 0 5rem;
+}
+#site-logo,
+#hgroup,
+#header-right,
+#supplementary,
+#main {
+	padding-top: 50px;
+	padding-top: 5rem;
+}
+#hgroup-wrap,
+.hentry,
+.comments-area article { 
+	padding-bottom: 50px;
+	padding-bottom: 5rem;
+}
+#site-generator .site-info {
+	padding: 40px 0;
+	padding: 4rem 0;
+}
+
+/* Font Sizes */
+body,
+button,
+input,
+select,
+textarea {
+	font-size: 16px;
+	font-size: 1.6rem;
+}
+#site-title {
+	font-size: 50px;
+	font-size: 5rem;
+}
+.entry-header .entry-title,
+#homepage-message {
+	font-size: 30px;
+	font-size: 3rem;
+}
+#homepage-message span {
+	font-size: 20px;
+	font-size: 2rem;	
+}
+#featured-post .entry-title {
+	font-size: 22px;
+	font-size: 2.2rem;		
+}	
+}
+
+@media screen and (max-width: 1060px) {
+.site {
+	margin: 20px auto;
+	margin: 2rem auto;
+    width: 900px;	
+    width: 90rem;
+}
+#primary {
+	width: 500px;
+}
+.page-links,
+.widget,
+blockquote,
+.site-content article,
+.site-content .site-navigation,
+#infinite-handle,
+.comments-title, #reply-title,
+#respond {
+	margin-bottom: 30px;
+	margin-bottom: 3rem;
+}
+#homepage-message {
+	margin-top: 30px;
+	margin-top: 3rem;
+}
+article.sticky .featured-post,
+.page-header,
+p,
+.featured-image,
+.entry-content table,
+.comment-content table,
+.widget.widget_catcheverest_social_widget,
+#content .searchform {
+	margin-bottom: 20px;
+	margin-bottom: 2rem;
+}
+#header-right .widget,
+.entry-header,
+article.format-aside .entry-title,
+.comments-area article header {
+	margin-bottom: 20px;
+	margin-bottom: 2rem;	
+}
+.page .entry-header,
+.widget-title,
+#header-right .widget.widget_catcheverest_social_widget {
+	margin-bottom: 10px;
+	margin-bottom: 1rem;
+}
+.container {
+	padding: 0 30px;
+	padding: 0 3rem;
+}
+#site-logo,
+#hgroup,
+#header-right,
+#supplementary,
+#main {
+	padding-top: 30px;
+	padding-top: 3rem;
+}
+#hgroup-wrap,
+.hentry,
+.comments-area article { 
+	padding-bottom: 30px;
+	padding-bottom: 3rem;
+}
+#site-generator .site-info {
+	padding: 20px 0;
+	padding: 2rem 0;
+}
+#header-menu ul.menu a, 
+#colophon #access-footer ul.menu a {
+	padding: 0 15px;
+	padding: 0 1.5rem;
+}
+.entry-header .entry-title {
+    padding-bottom: 0;
+}
+
+/* Font Sizes */
+body,
+button,
+input,
+select,
+textarea {
+	font-size: 14px;
+	font-size: 1.4rem;
+}
+.entry-header .entry-title,
+#homepage-message {
+	font-size: 20px;
+	font-size: 2rem;
+}
+#homepage-message span {
+	font-size: 15px;
+	font-size: 1.5rem;	
+}
+.widget-title {
+	font-size: 16px;
+	font-size: 1.6rem;		
+}
+.comments-title, #reply-title,
+.entry-content h1, .comment-content h1 {
+	font-size: 19px;
+    font-size: 1.9rem;
+}
+.entry-content h2, .comment-content h2 {
+	font-size: 18px;
+    font-size: 1.8rem;
+}
+.entry-content h3, .comment-content h3 {
+	font-size: 17px;
+    font-size: 1.7rem;
+}
+.entry-content h4, .comment-content h4 {
+	font-size: 16px;
+	font-size: 1.6rem;	
+}
+.entry-content h5, .comment-content h5 {
+	font-size: 15px;
+	font-size: 1.5rem;	
+}
+.entry-content h6, .comment-content h6 {
+	font-size: 14px;
+	font-size: 1.4rem;	
+}
+}
+@media screen and (max-width: 960px) {
+/* iPhone Landscape */	
+.site {
+    width: 700px;
+	width: 70rem;
+}
+#primary, 
+#secondary {
+    width: 100%;
+}
+#header-menu ul.menu a, #colophon #access-footer ul.menu a {
+	padding: 0 10px;
+    padding: 0 1rem;
+}
+
+/* Font Sizes */
+body,
+button,
+input,
+select,
+textarea {
+	font-size: 13px;
+	font-size: 1.3rem;
+}
+.entry-meta {
+	font-size: 12px;
+	font-size: 1.2rem;	
+}
+#featured-post .entry-title,
+.page-links {
+	font-size: 18px;
+    font-size: 1.8rem;
+}
+}
+
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : portrait) {
+/* Pad Portrait */	
+.site {
+	margin: 5px auto;
+	margin: 0.5rem auto;
+    width: 760px;
+	width: 76rem;
+}
+}
+
+@media screen and (max-width: 767px) {
+/* Larger Smart Devices */		
+.site {
+	width: 380px;
+    width: 38rem;
+}
+#site-title {
+	font-size: 30px;
+    font-size: 3rem;
+}
+#site-description {
+	font-size: 13px;
+    font-size: 1.3rem;
+    line-height: 1.4;
+}
+#header-right {
+    max-width: 100%;
+    width: 100%;
+}
+#main-slider .entry-container {
+    bottom: 0;
+    max-width: 100%;
+    position: relative;
+}
+#main-slider .entry-header {
+    margin-bottom: 0;
+}
+#main-slider .entry-title a {
+	background-color: transparent;
+	padding: 10px 25px 0;
+    padding: 1rem 2.5rem 0;
+}
+#main-slider .entry-content {
+	background-color: transparent;
+	padding: 0 25px 25px;
+    padding: 0 2.5rem 2.5rem;	
+}
+#slider-nav a {
+	font-size: 18px;
+	font-size: 1.8rem;
+	line-height: 1.4;
+    padding: 0 5px;
+}
+.entry-header .entry-title,
+#homepage-message,
+.comments-title, #reply-title {
+	font-size: 16px;
+	font-size: 1.6rem;
+}
+#featured-post .post,
+#colophon #supplementary .widget-area,
+#site-generator .copyright, 
+#site-generator .powered {
+	margin: 0;
+	width: 100%;
+}
+#site-generator .copyright, 
+#site-generator .powered {
+	text-align: center;
+}
+.menu {
+	display: none;
+}
+.tinynav {
+	display: block;
+}
+
+.sb-holder {
+	display: block;
+}
+.commentlist .children {
+    margin-left: 0;
+}
+.widget.widget_nav_menu .sb-holder {
+    background-color: #3A3D41;
+	color: #fff;
+    clear: both;
+    display: block;
+    width: 100%;
+}
+.widget.widget_nav_menu a,
+.widget.widget_nav_menu a:hover {
+	color: #fff;
+}
+	
+}
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+/* iPhone Landscape */
+.site {
+	width: 450px;
+    width: 45rem;
+}
+}
+@media screen and (max-width: 480px) {
+/* iPhone Portrait */	
+.site {
+	margin: 10px auto;
+	margin: 1rem auto;
+	width: 300px;
+    width: 30rem;
+}		
+.container {
+	padding: 0 20px;
+	padding: 0 2rem;
+}
+#hgroup-wrap,
+.hentry,
+.comments-area article { 
+	padding-bottom: 20px;
+	padding-bottom: 2rem;
+}
+#site-logo,
+#hgroup,
+#header-right,
+#supplementary,
+#main {
+	padding-top: 20px;
+	padding-top: 2rem;
+}
+#homepage-message {
+	margin-top: 20px;
+	margin-top: 2rem;
+}
+
+/* Font Sizes */
+body,
+button,
+input,
+select,
+textarea {
+	font-size: 12px;
+	font-size: 1.2rem;
+}
+#site-title {
+	font-size: 25px;
+    font-size: 2.5rem;
+}
+#site-description {
+	font-size: 12px;
+    font-size: 1.2rem;
+    line-height: 1.4;
+}
+.entry-meta,
+#site-generator {
+	font-size: 11px;
+	font-size: 1.1rem;	
+}
+#featured-post .entry-title,
+.page-links {
+	font-size: 16px;
+    font-size: 1.6rem;
+}
+}
+@media screen and (max-width: 320px) {
+/* Small Devices */	
+.site {
+	margin: 0;
+	width: 100%;
+}	
+#site-title {
+	font-size: 20px;
+    font-size: 2rem;
+}
+#site-description {
+	font-size: 12px;
+    font-size: 1.1rem;
+}
+}
+
