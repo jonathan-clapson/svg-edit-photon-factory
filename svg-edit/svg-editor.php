@@ -1,5 +1,5 @@
 <?php
-	require_once('../ulogin/config/all.inc.php');
+/*	require_once('../ulogin/config/all.inc.php');
 	require_once('../ulogin/main.inc.php');
 
 	// Start a secure session if none is running
@@ -16,7 +16,7 @@
 		$extra = '../login.php';
 		header("Location: http://$host$uri/$extra");
 		die();	
-	} else {
+	} else {*/
 ?>
 <!DOCTYPE html>
 <html>
@@ -689,5 +689,5 @@
 </html>
 
 <?php
-}
+//}
 ?>
