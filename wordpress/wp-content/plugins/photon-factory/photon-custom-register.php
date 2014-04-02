@@ -36,16 +36,14 @@ function photon_registration_errors ($errors, $sanitized_user_login, $user_email
 	if ( empty ($_POST['last_name'] ))
 		$errors->add( 'last_name_error', __('<strong>ERROR</strong>: You must include a last name.','localhost') );
 		
-	if ( empty ($_POST['email_address'] ))
-		$errors->add( 'email_address_error', __('<strong>ERROR</strong>: You must include an email address.','localhost') );
+	if ( empty ($_POST['mail_address'] ))
+		$errors->add( 'mail_address_error', __('<strong>ERROR</strong>: You must include a mail address.','localhost') );
 
 	return $errors;
 }
 
 add_action('user_register', 'photon_user_register');
 function photon_user_register ($user_id) {
-	/* make this connect to IT database */
-		if ( isset ($_POST['first_name']) )
-			update_user_meta($user_id, 'first_name', $_POST['first_name']);
+	
 }
 ?>
