@@ -45,13 +45,13 @@ var fill_active = 0;
 			curConfig = {
 				canvasName: 'default',
 				canvas_expansion: 3,
-				dimensions: [200000,150000],
+				dimensions: [130000,130000],
 				initFill: {
 					color: 'FFFFFF',  // solid red
 					opacity: 1
 				},
 				initStroke: {
-					width: 5,
+					width: 200,
 					color: '000000',  // solid black
 					opacity: 1
 				},

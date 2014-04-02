@@ -115,7 +115,7 @@ var svgns = "http://www.w3.org/2000/svg",
 var curConfig = {
 	show_outside_canvas: true,
 	selectNew: true,
-	dimensions: [200000, 150000]
+	dimensions: [130000, 130000]
 };
 
 // Update config with new one if given
