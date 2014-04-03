@@ -3,9 +3,8 @@
 ob_start();
 
 /* pull in wordpress */
-require_once ($_SERVER['DOCUMENT_ROOT']."wordpress/index.php");
-
 define('WP_USE_THEMES', false);
+require($_SERVER['DOCUMENT_ROOT']."wordpress/wp-blog-header.php");
 header("HTTP/1.1 200 OK");
 
 /* check if current user is logged in */
@@ -18,24 +17,6 @@ if ( get_current_user_id( ) == 0) {
 	die();	
 }
 
-/*	require_once('../ulogin/config/all.inc.php');
-	require_once('../ulogin/main.inc.php');
-
-	// Start a secure session if none is running
-	if (!sses_running())
-		sses_start();
-		
-	function isAppLoggedIn(){
-		return isset($_SESSION['uid']) && isset($_SESSION['username']) && isset($_SESSION['loggedIn']) && ($_SESSION['loggedIn']===true);
-	}
-	
-	if (!isAppLoggedIn()) {
-		$host  = $_SERVER['HTTP_HOST'];
-		$uri  = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-		$extra = '../login.php';
-		header("Location: http://$host$uri/$extra");
-		die();	
-	} else {*/
 ?>
 <!DOCTYPE html>
 <html>
@@ -708,5 +689,5 @@ if ( get_current_user_id( ) == 0) {
 </html>
 
 <?php
-//}
+ob_end_flush();
 ?>
