@@ -1,0 +1,43 @@
+/*
+ Theme Name:   Catch Everest Child
+ Template:     catch-everest
+*/
+
+@import url("../catch-everest/style.css");
+
+a.photon-button:link{	
+	background-color:#3c3c3c;
+	-webkit-border-top-left-radius:20px;
+	-moz-border-radius-topleft:20px;
+	border-top-left-radius:20px;
+	-webkit-border-top-right-radius:20px;
+	-moz-border-radius-topright:20px;
+	border-top-right-radius:20px;
+	-webkit-border-bottom-right-radius:20px;
+	-moz-border-radius-bottomright:20px;
+	border-bottom-right-radius:20px;
+	-webkit-border-bottom-left-radius:20px;
+	-moz-border-radius-bottomleft:20px;
+	border-bottom-left-radius:20px;
+	display:inline-block;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	height:34px;
+	line-height:34px;
+	width:131px;
+	text-decoration:none;
+	text-align:center;
+}
+a.photon-button:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #3c3c3c), color-stop(1, #3c3c3c) );
+	background:-moz-linear-gradient( center top, #3c3c3c 5%, #3c3c3c 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#3c3c3c', endColorstr='#3c3c3c');
+	background-color:#3c3c3c;
+}
+a.photon-button:active {
+	position:relative;
+	top:1px;
+}
+/* This button was generated using CSSButtonGenerator.com */
