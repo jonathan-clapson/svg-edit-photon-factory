@@ -1,4 +1,23 @@
 <?php
+
+ob_start();
+
+/* pull in wordpress */
+require_once ($_SERVER['DOCUMENT_ROOT']."wordpress/index.php");
+
+define('WP_USE_THEMES', false);
+header("HTTP/1.1 200 OK");
+
+/* check if current user is logged in */
+if ( get_current_user_id( ) == 0) {
+
+	$host  = $_SERVER['HTTP_HOST'];
+	$uri  = $_SERVER['DOCUMENT_ROOT'];
+	$extra = 'wordpress';
+	header("Location: http://$host/$extra");
+	die();	
+}
+
 /*	require_once('../ulogin/config/all.inc.php');
 	require_once('../ulogin/main.inc.php');
 
