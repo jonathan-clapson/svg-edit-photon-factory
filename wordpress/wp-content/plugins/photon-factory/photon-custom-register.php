@@ -22,8 +22,8 @@ function photon_register_form() {
 	<input type="text" name="last_name" id="last_name" class="input" value="<?php echo esc_attr(stripslashes($last_name)); ?>" size="25" /></label>
 </p>
 <p>
-	<label for="email_address"><?php _e('Email Address','localhost') ?><br />
-	<input type="text" name="email_address" id="email_address" class="input" value="<?php echo esc_attr(stripslashes($email_address)); ?>" size="25" /></label>
+	<label for="mail_address"><?php _e('Mail Address','localhost') ?><br />
+	<input type="text" name="mail_address" id="mail_address" class="input" value="<?php echo esc_attr(stripslashes($mail_address)); ?>" size="25" /></label>
 </p>
 <?php
 }
@@ -44,6 +44,11 @@ function photon_registration_errors ($errors, $sanitized_user_login, $user_email
 
 add_action('user_register', 'photon_user_register');
 function photon_user_register ($user_id) {
-	
+	if ( isset( $_POST['first_name'] ) )
+		update_user_meta($user_id, 'first_name', $_POST['first_name']);
+	if ( isset( $_POST['last_name'] ) )
+		update_user_meta($user_id, 'last_name', $_POST['last_name']);
+	if ( isset( $_POST['mail_address'] ) )
+		update_user_meta($user_id, 'mail_address', $_POST['mail_address']);
 }
 ?>
