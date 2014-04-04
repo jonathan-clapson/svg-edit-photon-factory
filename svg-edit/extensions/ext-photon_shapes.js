@@ -21,13 +21,13 @@ svgEditor.addExtension("shapes", function() {
 	// This populates the category list
 	var categories = {
 		wells: 'Wells',
-		object: 'Objects',
+		wells2: 'Wells2',
 	};
 	
 	var library = {
 	};
 	
-	var cur_lib;
+	var cur_lib = null;
 	
 	var mode_id = 'shapelib';
 	
@@ -69,6 +69,55 @@ svgEditor.addExtension("shapes", function() {
 		loadIcons();
 	}
 	
+	function create_svg_icon(shape_data) {
+		console.log("in_tag: " + shape_data);
+			
+		// We need to change the svg string so that the viewport is set to the current svg width/height and then set the svg width/height to icon size
+		
+		// the first tag is the svg tag. It is ended by >. Seperate the svg tag from the rest
+		// we drop the > as we will put a viewbox in its place 
+		var svg_tag = shape_data.substring(0, shape_data.indexOf(">"));
+		var svg_remaining = shape_data.substring(shape_data.indexOf(">") + 1, shape_data.length);
+		
+		// split the svg tag based on " character
+		var parts = svg_tag.split('"');
+		
+		// remove the svg tag which is attached to the first element
+		parts[0] = parts[0].substring(parts[0].indexOf("g")+1, parts[0].length);
+		
+		// find the width and height elements, their arguments are in the next string
+		var svg_width;
+		var svg_height;
+		for (var i=0; i<parts.length; i++) {
+			// remove whitspace so formatting can't get in the way of detection
+			var part_no_whitespace = parts[i].replace(/\s+/g,"");
+			if (part_no_whitespace === "width=") {
+				svg_width = parts[i+1];
+				parts[i+1] = icon_width.toString();
+			}
+			if (part_no_whitespace === "height=") {
+				svg_height = parts[i+1];
+				parts[i+1] = icon_height.toString();
+			}
+		}
+		
+		// reassemble the svg tag
+		svg_tag = parts.join('"');
+		svg_tag = "<svg " + svg_tag;
+		
+		// we now need to add viewbox to end of svg tag using original svg coords
+		vb = [ 0, 0, svg_width, svg_height].join(" ");
+		svg_tag = svg_tag + '><svg viewbox="' + vb + '">';
+		
+		// reassemble the entire string
+		shape_data = svg_tag + svg_remaining + '</svg>';
+		console.log("final tag: " + shape_data);
+		
+		// create the icon
+		return new DOMParser().parseFromString(shape_data, 'text/xml');
+	
+	}
+	
 	/* create the buttons which select svg images in the library */
 	function makeButtons(cat, shapes) {
 		var size = cur_lib.size || 300;
@@ -87,51 +136,9 @@ svgEditor.addExtension("shapes", function() {
 	
 		for(var id in data) {
 			var shape_d = data[id];
-			console.log("in_tag: " + shape_d);
 			
-			// We need to change the svg string so that the viewport is set to the current svg width/height and then set the svg width/height to icon size
+			shape_document = create_svg_icon(shape_d);
 			
-			// the first tag is the svg tag. It is ended by >. Seperate the svg tag from the rest
-			// we drop the > as we will put a viewbox in its place 
-			var svg_tag = shape_d.substring(0, shape_d.indexOf(">"));
-			var svg_remaining = shape_d.substring(shape_d.indexOf(">") + 1, shape_d.length);
-			
-			// split the svg tag based on " character
-			var parts = svg_tag.split('"');
-			
-			// remove the svg tag which is attached to the first element
-			parts[0] = parts[0].substring(parts[0].indexOf("g")+1, parts[0].length);
-			
-			// find the width and height elements, their arguments are in the next string
-			var svg_width;
-			var svg_height;
-			for (var i=0; i<parts.length; i++) {
-				// remove whitspace so formatting can't get in the way of detection
-				var part_no_whitespace = parts[i].replace(/\s+/g,"");
-				if (part_no_whitespace === "width=") {
-					svg_width = parts[i+1];
-					parts[i+1] = icon_width.toString();
-				}
-				if (part_no_whitespace === "height=") {
-					svg_height = parts[i+1];
-					parts[i+1] = icon_height.toString();
-				}
-			}
-			
-			// reassemble the svg tag
-			svg_tag = parts.join('"');
-			svg_tag = "<svg " + svg_tag;
-			
-			// we now need to add viewbox to end of svg tag using original svg coords
-			vb = [ 0, 0, svg_width, svg_height].join(" ");
-			svg_tag = svg_tag + '><svg viewbox="' + vb + '">';
-			
-			// reassemble the entire string
-			shape_d = svg_tag + svg_remaining + '</svg>';
-			console.log("final tag: " + shape_d);
-			
-			// create the icon
-			var shape_document = new DOMParser().parseFromString(shape_d, 'text/xml');
 			var svg_icon_elem = $(document.importNode(shape_document.documentElement,true));
 			
 			// set icon width and height
