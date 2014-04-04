@@ -20,10 +20,17 @@ svgEditor.addExtension("server_opensave", {
 	
 		svgEditor.setCustomHandlers({
 			save: function(win, data) {
-				var svg = "<?xml version=\"1.0\"?>\n" + data;
-				console.log("data: " + data);
-				var svg_data = encodeURI(data);
-				//var svg_data = svgedit.utilities.encode64(svg);
+				/* get the image name */
+				var title = svgCanvas.getDocumentTitle();
+				var filename = title.replace(/[^a-z0-9\.\_\-]+/gi, '_');
+				
+				if (title.length == 0) {
+					alert("You must set a title in the document properties before you can save.");
+					return;
+				}
+				
+				/* grab an encoded version of data */
+				var svg_data = encodeURI(data);				
 				
 				var form = document.createElement("form");
 				form.setAttribute("method", "post");
@@ -35,12 +42,12 @@ svgEditor.addExtension("server_opensave", {
 				svg_data_field.setAttribute("type", "hidden");
 				svg_data_field.setAttribute("name", "svgdata");
 				svg_data_field.setAttribute("value", svg_data);
-				form.appendChild(svg_data_field);
+				form.appendChild(svg_data_field);				
 				
 				var svg_name_field = document.createElement("input");
 				svg_name_field.setAttribute("type", "hidden");
 				svg_name_field.setAttribute("name", "svgname");
-				svg_name_field.setAttribute("value", "b.svg");
+				svg_name_field.setAttribute("value", filename);
 				form.appendChild(svg_name_field);
 				
 				document.body.appendChild(form);

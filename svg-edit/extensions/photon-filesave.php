@@ -32,43 +32,36 @@ if ( get_current_user_id( ) == 0) {
 	die();	
 }
 
-echo "cur user id: " . get_current_user_id();
-
 $file = $_POST['svgname'];
 $data = $_POST['svgdata'];
 $raw_data = urldecode($data);
-echo "b";
 
 /* set up paths */
 $username = wp_get_current_user()->user_login;
-echo "c" . $username;
 $dir_path = $storage_basepath . $username;
-$file_path = $dir_path . "/" . $file;
 
+/* timestamp the file so we don't overwrite existing files (in case theres an old file with same name) */
+$date = new DateTime();
+$timestamp = $date->getTimestamp();
+
+/* generate and store a session id with the file so if multiple users use one account they can't overwrite each others data */
+session_start();
+$sess_id = session_id();
+echo $sess_id;
+
+$file_path = $dir_path . "/" . $file . "-" . $sess_id . "-" . $timestamp . ".svg";
 /* create directory if doesn't exist */
 if (!is_dir($dir_path)) {
 	mkdir($dir_path, 0730, true);
 }
 
 /* create and save file */
-echo "file: " . $file_path;
 $handle = fopen($file_path, "w");
 if (!$handle) {
 	echo "Server Permissions error: I can't save file";
 }
 fprintf($handle, "%s", $raw_data);
 fclose($handle);
-
-
-
- /*header("Cache-Control: public");
- header("Content-Description: File Transfer");
- header("Content-Disposition: attachment; filename=" . $file);
- header("Content-Type: " .  $mime);
- header("Content-Transfer-Encoding: binary");
- 
- echo $contents;*/
-echo "done!";
 
 ob_end_flush();
 ?>
