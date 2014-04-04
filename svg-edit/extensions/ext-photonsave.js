@@ -28,7 +28,8 @@ svgEditor.addExtension("server_opensave", {
 				var form = document.createElement("form");
 				form.setAttribute("method", "post");
 				form.setAttribute("action", server_receive_url);
-				form.setAttribute("target", target);
+				form.setAttribute("target", "output_frame");
+				form.setAttribute("target", "a");
 				
 				var svg_data_field = document.createElement("input");
 				svg_data_field.setAttribute("type", "hidden");
