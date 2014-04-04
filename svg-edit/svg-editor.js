@@ -60,7 +60,7 @@ var fill_active = 0;
 				langPath: 'locale/',
 				extPath: 'extensions/',
 				jGraduatePath: 'jgraduate/images/',
-				extensions: ['ext-markers.js','ext-connector.js', 'ext-shapes.js', 'ext-grid.js', 'ext-photonsave.js'],
+				extensions: ['ext-markers.js','ext-connector.js', 'ext-photon_shapes.js', 'ext-grid.js', 'ext-photon_save.js'],
 				initTool: 'select',
 				wireframe: false,
 				colorPickerCSS: null,
