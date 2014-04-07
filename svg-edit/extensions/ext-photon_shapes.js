@@ -9,8 +9,6 @@
  */
 
 svgEditor.addExtension("shapes", function() {
-	
-
 	var current_d, cur_shape_id;
 	var canv = svgEditor.canvas;
 	var cur_shape;
@@ -30,6 +28,9 @@ svgEditor.addExtension("shapes", function() {
 	var cur_lib = null;
 	
 	var mode_id = 'shapelib';
+	
+	var icon_width = 24;
+	var icon_height = 24;
 	
 	function loadIcons() {
 		$('#shape_buttons').empty();
@@ -91,14 +92,17 @@ svgEditor.addExtension("shapes", function() {
 		for (var i=0; i<parts.length; i++) {
 			// remove whitspace so formatting can't get in the way of detection
 			var part_no_whitespace = parts[i].replace(/\s+/g,"");
+			// retrieve current width and replace with icon width
 			if (part_no_whitespace === "width=") {
 				svg_width = parts[i+1];
 				parts[i+1] = icon_width.toString();
 			}
+			// retrieve current height and replace with icon height
 			if (part_no_whitespace === "height=") {
 				svg_height = parts[i+1];
 				parts[i+1] = icon_height.toString();
 			}
+			console.log("parts: " + parts[i]);
 		}
 		
 		// reassemble the svg tag
@@ -106,16 +110,36 @@ svgEditor.addExtension("shapes", function() {
 		svg_tag = "<svg " + svg_tag;
 		
 		// we now need to add viewbox to end of svg tag using original svg coords
-		vb = [ 0, 0, svg_width, svg_height].join(" ");
-		svg_tag = svg_tag + '><svg viewbox="' + vb + '">';
+		vb = [ -svg_width/2, -svg_height/2, svg_width, svg_height].join(" ");
+		//i'm unsure why but it seems viewBox MUST have a capitol B...
+		svg_tag = svg_tag + ' viewBox="' + vb + '">';
+		
+		// override all stroke widths with the greater of svg_width or svg_height divide 10
+		// this makes it big enough it can be seen
+		var stroke_width = Math.max(svg_width, svg_height)/10;
+		console.log("strwid: " + stroke_width);
+		var parts = svg_remaining.split('=');
+		for (var i=0; i<parts.length; i++) {
+			var cur_part = parts[i];
+			var attr = cur_part.substring(cur_part.lastIndexOf(" ")+1, cur_part.length);
+			// find all stroke widths case insensitive
+			if (attr.toUpperCase() === "stroke-width".toUpperCase()) {
+				var cur_value = parts[i+1];				
+				// we are replacing the value part, thus we need to get the next attr so we can retain it
+				var end = cur_value.substring(cur_value.indexOf(" "), cur_value.length);
+				//overwrite current part with '"(stroke-width)" (next_attr)'
+				parts[i+1] = "\"" + stroke_width + "\"" + end;
+			}
+		}
+		// rejoin all the parts
+		svg_remaining = parts.join('=');
 		
 		// reassemble the entire string
-		shape_data = svg_tag + svg_remaining + '</svg>';
+		shape_data = svg_tag + svg_remaining;
 		console.log("final tag: " + shape_data);
 		
 		// create the icon
-		return new DOMParser().parseFromString(shape_data, 'text/xml');
-	
+		return new DOMParser().parseFromString(shape_data, 'text/xml');		
 	}
 	
 	/* create the buttons which select svg images in the library */
@@ -127,9 +151,6 @@ svgEditor.addExtension("shapes", function() {
 		//var vb = [0, 0, 32000, size + off*2].join(' ');
 		var stroke = fill ? 0: (size/30);
 		
-		var icon_width = 24;
-		var icon_height = 24;
-	
 		var data = shapes.data;
 		
 		cur_lib.buttons = [];
