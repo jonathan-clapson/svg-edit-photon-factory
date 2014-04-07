@@ -291,47 +291,15 @@ var addSvgElementFromJson = this.addSvgElementFromJson = function(data) {
 // * curStyles - Boolean indicating that current style attributes should be applied first
 //
 // Returns: The new element
-var addSvgElementFromString = this.addSvgElementFromString = function(data) {
-	shape_document = new DOMParser().parseFromString(data, 'text/xml');
-	console.log(shape_document.documentElement);
-	var svg_elem = $(svgdoc.importNode(shape_document.documentElement,true));
-	console.log(svg_elem);
-	console.log(svg_elem.constructor);
-	console.log(svgdoc);
+var addSvgElementFromElem = this.addSvgElementFromElem = function(elem) {
+	var svg_elem = $(svgdoc.importNode(elem,true));
 	var current_layer = getCurrentDrawing().getCurrentLayer();
 	if (current_layer) {
-		(current_group || current_layer).appendChild(shape_document.documentElement);
+		(current_group || current_layer).appendChild(elem);
 	}
-/*	var shape = svgedit.utilities.getElem(data.attr.id);
-	// if shape is a path but we need to create a rect/ellipse, then remove the path
-	var current_layer = getCurrentDrawing().getCurrentLayer();
-	if (shape && data.element != shape.tagName) {
-		current_layer.removeChild(shape);
-		shape = null;
-	}
-	if (!shape) {
-		shape = svgdoc.createElementNS(svgns, data.element);
-		if (current_layer) {
-			(current_group || current_layer).appendChild(shape);
-		}
-	}
-	if(data.curStyles) {
-		svgedit.utilities.assignAttributes(shape, {
-			"fill": cur_shape.fill,
-			"stroke": cur_shape.stroke,
-			"stroke-width": cur_shape.stroke_width,
-			"stroke-dasharray": cur_shape.stroke_dasharray,
-			"stroke-linejoin": cur_shape.stroke_linejoin,
-			"stroke-linecap": cur_shape.stroke_linecap,
-			"stroke-opacity": cur_shape.stroke_opacity,
-			"fill-opacity": cur_shape.fill_opacity,
-			"opacity": cur_shape.opacity / 2,
-			"style": "pointer-events:inherit"
-		}, 100);
-	}
-	svgedit.utilities.assignAttributes(shape, data.attr, 100);
-	svgedit.utilities.cleanupElement(shape);*/
-	return shape_document.documentElement;
+	svgedit.utilities.cleanupElement(elem);
+	
+	return elem;
 };
 
 

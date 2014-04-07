@@ -301,44 +301,24 @@ svgEditor.addExtension("shapes", function() {
 			var cur_style = canv.getStyle();
 			
 			console.log("down!");
-
-			/*cur_shape = canv.addSvgElementFromJson({
-				"element": "path",
-				"curStyles": true,
-				"attr": {
-					"d": current_d,
-					"id": canv.getNextId(),
-					"opacity": cur_style.opacity / 2,
-					"style": "pointer-events:none"
-				}
-			});*/
-			
-			/*cur_shape = new DOMParser().parseFromString(current_d, 'text/xml');
-			svgdoc = document.getElementById("svgcanvas");
-			console.log(svgdoc);
-			console.log(canv);*/
-			canv.addSvgElementFromString(current_d);
-			/*// Make sure shape uses absolute values
-			if(/[a-z]/.test(current_d)) {
-				current_d = cur_lib.data[cur_shape_id] = canv.pathActions.convertPath(cur_shape);
-				console.log("current_d fixed" + current_d);
-				cur_shape.setAttribute('d', current_d);
-				canv.pathActions.fixEnd(cur_shape);
-			}
-	
-			cur_shape.setAttribute('transform', "translate(" + x + "," + y + ") scale(0.005) translate(" + -x + "," + -y + ")");
-			
-// 			console.time('b');
-			canv.recalculateDimensions(cur_shape);
-			
-			var tlist = canv.getTransformList(cur_shape);
-			
-			lastBBox = cur_shape.getBBox();
+					
+			// go through current_d looking for g elements to import
+			shape_document = new DOMParser().parseFromString(current_d, 'text/xml');
+			var g_list = shape_document.getElementsByTagName("g");
+			console.log("found g's: " + g_list.length);
+			for (var i=0; i<g_list.length; i++) {
+				// clone the node so it doesn't disappear from the list
+				cur_shape = g_list[i].cloneNode(true);
+				canv.addSvgElementFromElem(cur_shape);
+				cur_shape.setAttribute('transform', "translate(" + x + "," + y + ") scale(0.005) translate(" + -x + "," + -y + ")");
+				canv.recalculateDimensions(cur_shape);
+				var tlist = canv.getTransformList(cur_shape);
+				lastBBox = cur_shape.getBBox();
+			}			
 			
 			return {
 				started: true
-			}*/
-			// current_d
+			}
 		},
 		mouseMove: function(opts) {
 			var mode = canv.getMode();
@@ -346,8 +326,6 @@ svgEditor.addExtension("shapes", function() {
 			
 			var zoom = canv.getZoom();
 			var evt = opts.event
-
-			console.log("move!");			
 			
 			var x = opts.mouse_x/zoom;
 			var y = opts.mouse_y/zoom;
@@ -356,8 +334,8 @@ svgEditor.addExtension("shapes", function() {
 				box = cur_shape.getBBox(), 
 				left = box.x, top = box.y, width = box.width,
 				height = box.height;
-			var dx = (x-start_x), dy = (y-start_y);
 
+			var dx = (x-start_x), dy = (y-start_y);
 			var newbox = {
 				'x': Math.min(start_x,x),
 				'y': Math.min(start_y,y),
