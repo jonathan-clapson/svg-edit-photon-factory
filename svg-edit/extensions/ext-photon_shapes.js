@@ -102,7 +102,6 @@ svgEditor.addExtension("shapes", function() {
 				svg_height = parts[i+1];
 				parts[i+1] = icon_height.toString();
 			}
-			console.log("parts: " + parts[i]);
 		}
 		
 		// reassemble the svg tag
@@ -117,7 +116,6 @@ svgEditor.addExtension("shapes", function() {
 		// override all stroke widths with the greater of svg_width or svg_height divide 10
 		// this makes it big enough it can be seen
 		var stroke_width = Math.max(svg_width, svg_height)/10;
-		console.log("strwid: " + stroke_width);
 		var parts = svg_remaining.split('=');
 		for (var i=0; i<parts.length; i++) {
 			var cur_part = parts[i];
@@ -293,7 +291,7 @@ svgEditor.addExtension("shapes", function() {
 
 	
 		},
-		mouseDown: function(opts) {
+		mouseDown: function(opts) {			
 			var mode = canv.getMode();
 			if(mode !== mode_id) return;
 			
@@ -301,8 +299,10 @@ svgEditor.addExtension("shapes", function() {
 			var x = start_x = opts.start_x;
 			var y = start_y = opts.start_y;
 			var cur_style = canv.getStyle();
+			
+			console.log("down!");
 
-			cur_shape = canv.addSvgElementFromJson({
+			/*cur_shape = canv.addSvgElementFromJson({
 				"element": "path",
 				"curStyles": true,
 				"attr": {
@@ -311,9 +311,14 @@ svgEditor.addExtension("shapes", function() {
 					"opacity": cur_style.opacity / 2,
 					"style": "pointer-events:none"
 				}
-			});
+			});*/
 			
-			// Make sure shape uses absolute values
+			/*cur_shape = new DOMParser().parseFromString(current_d, 'text/xml');
+			svgdoc = document.getElementById("svgcanvas");
+			console.log(svgdoc);
+			console.log(canv);*/
+			canv.addSvgElementFromString(current_d);
+			/*// Make sure shape uses absolute values
 			if(/[a-z]/.test(current_d)) {
 				current_d = cur_lib.data[cur_shape_id] = canv.pathActions.convertPath(cur_shape);
 				console.log("current_d fixed" + current_d);
@@ -332,7 +337,7 @@ svgEditor.addExtension("shapes", function() {
 			
 			return {
 				started: true
-			}
+			}*/
 			// current_d
 		},
 		mouseMove: function(opts) {
@@ -341,6 +346,8 @@ svgEditor.addExtension("shapes", function() {
 			
 			var zoom = canv.getZoom();
 			var evt = opts.event
+
+			console.log("move!");			
 			
 			var x = opts.mouse_x/zoom;
 			var y = opts.mouse_y/zoom;
@@ -399,9 +406,11 @@ svgEditor.addExtension("shapes", function() {
 			
 			lastBBox = cur_shape.getBBox();
 		},
-		mouseUp: function(opts) {
+		mouseUp: function(opts) {			
 			var mode = canv.getMode();
 			if(mode !== mode_id) return;
+			
+			console.log("up!");
 			
 			if(opts.mouse_x == start_x && opts.mouse_y == start_y) {
 				return {

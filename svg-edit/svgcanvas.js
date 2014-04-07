@@ -280,6 +280,60 @@ var addSvgElementFromJson = this.addSvgElementFromJson = function(data) {
 	return shape;
 };
 
+// Function: addSvgElementFromString
+// Create a new SVG element based on the given object keys/values and add it to the current layer
+// The element will be ran through cleanupElement before being returned 
+//
+// Parameters:
+// data - Object with the following keys/values:
+// * element - tag name of the SVG element to create
+// * attr - Object with attributes key-values to assign to the new element
+// * curStyles - Boolean indicating that current style attributes should be applied first
+//
+// Returns: The new element
+var addSvgElementFromString = this.addSvgElementFromString = function(data) {
+	shape_document = new DOMParser().parseFromString(data, 'text/xml');
+	console.log(shape_document.documentElement);
+	var svg_elem = $(svgdoc.importNode(shape_document.documentElement,true));
+	console.log(svg_elem);
+	console.log(svg_elem.constructor);
+	console.log(svgdoc);
+	var current_layer = getCurrentDrawing().getCurrentLayer();
+	if (current_layer) {
+		(current_group || current_layer).appendChild(shape_document.documentElement);
+	}
+/*	var shape = svgedit.utilities.getElem(data.attr.id);
+	// if shape is a path but we need to create a rect/ellipse, then remove the path
+	var current_layer = getCurrentDrawing().getCurrentLayer();
+	if (shape && data.element != shape.tagName) {
+		current_layer.removeChild(shape);
+		shape = null;
+	}
+	if (!shape) {
+		shape = svgdoc.createElementNS(svgns, data.element);
+		if (current_layer) {
+			(current_group || current_layer).appendChild(shape);
+		}
+	}
+	if(data.curStyles) {
+		svgedit.utilities.assignAttributes(shape, {
+			"fill": cur_shape.fill,
+			"stroke": cur_shape.stroke,
+			"stroke-width": cur_shape.stroke_width,
+			"stroke-dasharray": cur_shape.stroke_dasharray,
+			"stroke-linejoin": cur_shape.stroke_linejoin,
+			"stroke-linecap": cur_shape.stroke_linecap,
+			"stroke-opacity": cur_shape.stroke_opacity,
+			"fill-opacity": cur_shape.fill_opacity,
+			"opacity": cur_shape.opacity / 2,
+			"style": "pointer-events:inherit"
+		}, 100);
+	}
+	svgedit.utilities.assignAttributes(shape, data.attr, 100);
+	svgedit.utilities.cleanupElement(shape);*/
+	return shape_document.documentElement;
+};
+
 
 // import svgtransformlist.js
 var getTransformList = canvas.getTransformList = svgedit.transformlist.getTransformList;
