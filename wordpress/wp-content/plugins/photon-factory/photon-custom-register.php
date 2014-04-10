@@ -126,7 +126,6 @@ function photon_user_register ($user_id) {
 	$mail->Subject = "User Registration: $user_login";	
 	$mail->Body = "$first_name $last_name has registered with the username $user->user_login. To add their contact details please open the attached file.";
 	$mail->AddAddress("lasermaze@photonfactory.org.nz", "lasermaze");
-	$mail->AddAddress("jonathan.clapson@gmail.com", "lasermaze");
 	
 	$vcardString = "BEGIN:VCARD\r\nVERSION:4.0\r\nN:$last_name;$first_name;;;\r\nFN:$user_login\r\nNICKNAME:$user_login\r\nADR:$po_box;$extended_address;$street_address;$locality;$region;$post_code;$country\r\nEMAIL:$user_email\r\nEND:VCARD\r\n";
 	
