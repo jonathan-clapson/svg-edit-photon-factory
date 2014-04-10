@@ -20,7 +20,7 @@
 function generate_svg_thumbnail($form_num, $svg_title, $svg_path)
 {
 	$gallery_content_string = '
-		<form name="svgedit%s" method="post" action="' . plugin_dir_url(__FILE__) .'svg-edit/svg-editor.php' . '">
+		<form target="_blank" name="svgedit%s" method="post" action="' . plugin_dir_url(__FILE__) .'svg-edit/svg-editor.php' . '">
 		<input type="hidden" name="svg_path" value="%s" />
 		<input type="hidden" name="action" value="load" />
 		</form>
