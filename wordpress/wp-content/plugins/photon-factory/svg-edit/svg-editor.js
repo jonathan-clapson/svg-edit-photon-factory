@@ -182,6 +182,15 @@ var fill_active = 0;
 		// 	- save the file to location chosen by the user
 		Editor.setCustomHandlers = function(opts) {
 			Editor.ready(function() {
+				var action = $("#loadaction").attr('value');
+				if ( action == "load") {
+					var svgstring = $("#svgstring").attr('value');
+					svgCanvas.setSvgString(svgstring);
+					
+					console.log("Loaded svg string" + svgstring);
+				}
+				console.log("Started");			
+			
 				if(opts.open) {
 					$('#tool_open > input[type="file"]').remove();
 					$('#tool_open').show();

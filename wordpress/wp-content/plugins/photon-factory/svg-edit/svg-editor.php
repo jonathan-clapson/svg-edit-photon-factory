@@ -676,6 +676,17 @@ if ( get_current_user_id( ) == 0) {
 	<li><a href="#merge_all">Merge All</a></li>
 </ul>
 
+<?php
+/* if we've been asked to load a file put in some hidden div's to tell javascript to do it */
+if ($_POST['action'] == "load") {	
+	//FIXME: should check that the file thats being loaded belongs to the user
+	$svgstring = htmlspecialchars(file_get_contents($_POST['svg_path']));
+	$svgstring = preg_replace('!\s+!m', ' ', $svgstring);
+	echo '<input type="hidden" id="loadaction" value="load" />';
+	echo '<input type="hidden" id="svgstring" value="' . $svgstring . '" />';
+}
+?>
+
 </body>
 </html>
 
