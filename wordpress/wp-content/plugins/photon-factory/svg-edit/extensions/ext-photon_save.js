@@ -1,5 +1,5 @@
 /*
- * ext-server_moinsave.js
+ * ext-photon_save.js
  *
  * Licensed under the MIT License
  *
@@ -7,13 +7,15 @@
  *              2011 MoinMoin:ReimarBauer
  *                   adopted for moinmoins item storage. it sends in one post png and svg data
  *                   (I agree to dual license my work to additional GPLv2 or later)
+ *              2014 Photon Factory
+ *                   adapted for php file storage
  *
  */
 
 svgEditor.addExtension("server_opensave", {
 	callback: function() {
 
-		var server_receive_url = '/svg-edit/extensions/photon-filesave.php';
+		var server_receive_url = 'extensions/photon-filesave.php';
 		
 		// Create upload target (hidden iframe)
 		var target = $('<iframe name="output_frame" src="#"/>').hide().appendTo('body');
@@ -46,7 +48,7 @@ svgEditor.addExtension("server_opensave", {
 				
 				var svg_name_field = document.createElement("input");
 				svg_name_field.setAttribute("type", "hidden");
-				svg_name_field.setAttribute("name", "svgname");
+				svg_name_field.setAttribute("name", "svgtitle");
 				svg_name_field.setAttribute("value", filename);
 				form.appendChild(svg_name_field);
 				
