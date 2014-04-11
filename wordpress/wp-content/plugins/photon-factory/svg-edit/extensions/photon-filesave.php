@@ -45,44 +45,44 @@ $images = get_posts( array(
 	'numberposts' => -1,
 	'post_status' => null,
 	'post_parent' => null, // any parent
-	'post-mime-type' => 'image/svg+xml',
-	'post-title' => $title,
+	'post_mime_type' => 'image/svg+xml',
+	'name' => $title,
 	)
 );
 
 // if we have a match
-if (count($image)) {
+echo "here";
+if (count($images)) {
 	// remove ALL entries. There should only ever be one, we are about to overwrite it
-	foreach $images as $image {
-		wp_delete_post( $image->id );
+	var_dump($images);
+	foreach ($images as $image) {
+		wp_delete_post( $image->ID );
 	}
-} else {
-	// this is a new image
-/*	(array) (required) Array of data about the attachment that will be written into the wp_posts table of the database. Must contain at a minimum the keys post_title, post_content (the value for this key should be the empty string), post_status and post_mime_type.*/
-	$filename = basename( $title );
-	$filetype = wp_check_filetype( $filename , null );
-	$wp_upload_dir = wp_upload_dir();
-	$file_path = $wp_upload_dir['path'] . '/' . $filename;
-	$file_url = $wp_upload_dir['url'] . '/' . $filename;
-	
-	$attachment = array(
-		'guid'			=> $file_url,
-		'post_mime_type'	=> $filetype['type'],
-		'post_title'		=> $filename,
-		'post_content'		=> '',
-		'post_status'		=> 'inherit'
-	);
-	
-	$attach_id = wp_insert_attachment($attachment, $file_path);
-	
-	// Make sure that this file is included, as wp_generate_attachment_metadata() depends on it.
-	require_once( ABSPATH . 'wp-admin/includes/image.php' );
-
-	// Generate the metadata for the attachment, and update the database record.
-	$attach_data = wp_generate_attachment_metadata( $attach_id, $filename );
-	wp_update_attachment_metadata( $attach_id, $attach_data );
 }
+// this is a new image
+$filename = basename( $title );
+echo "filename: $filename";
+$filetype = wp_check_filetype( $filename , null );
+$wp_upload_dir = wp_upload_dir();
+$file_path = $wp_upload_dir['path'] . '/' . $filename;
+$file_url = $wp_upload_dir['url'] . '/' . $filename;
 
+$attachment = array(
+	'guid'			=> $file_url,
+	'post_mime_type'	=> $filetype['type'],
+	'post_title'		=> $filename,
+	'post_content'		=> '',
+	'post_status'		=> 'inherit'
+);
+
+$attach_id = wp_insert_attachment($attachment, $file_path);
+
+// Make sure that this file is included, as wp_generate_attachment_metadata() depends on it.
+require_once( ABSPATH . 'wp-admin/includes/image.php' );
+
+// Generate the metadata for the attachment, and update the database record.
+$attach_data = wp_generate_attachment_metadata( $attach_id, $filename );
+wp_update_attachment_metadata( $attach_id, $attach_data );
 // create/overwrite and save file contents
 $handle = fopen($file_path, "w");
 if (!$handle) {
@@ -94,4 +94,3 @@ fclose($handle);
 
 ob_end_flush();
 ?>
-http://localhost/wordpress/wp-content/uploads/2014/04/asdf.svg
