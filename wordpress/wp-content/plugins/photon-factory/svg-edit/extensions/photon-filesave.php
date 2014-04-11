@@ -51,17 +51,14 @@ $images = get_posts( array(
 );
 
 // if we have a match
-echo "here";
 if (count($images)) {
 	// remove ALL entries. There should only ever be one, we are about to overwrite it
-	var_dump($images);
 	foreach ($images as $image) {
 		wp_delete_post( $image->ID );
 	}
 }
 // this is a new image
 $filename = basename( $title );
-echo "filename: $filename";
 $filetype = wp_check_filetype( $filename , null );
 $wp_upload_dir = wp_upload_dir();
 $file_path = $wp_upload_dir['path'] . '/' . $filename;
