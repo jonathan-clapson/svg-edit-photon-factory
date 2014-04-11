@@ -17,8 +17,9 @@ function photon_svg_edit_activate() {
 
 	// if the title is set to a html link, the page menu item becomes a link to the page
 	$page_name = 'SVG Editor'; //the url
-	$page_title = '<a href="/svg-edit/svg-editor.php" target="_blank">SVG Editor</a>'; //the title
-	
+	//$page_title = '<a href="/svg-edit/svg-editor.php" target="_blank">SVG Editor</a>'; //the title
+	$page_title = 'SVG Editor';
+	$svgeditlink = plugins_url( 'svg-edit/svg-editor.php', __FILE__ );	
 	
 	// add the menu entry
 	delete_option('svg_edit_page_title');
@@ -37,7 +38,7 @@ function photon_svg_edit_activate() {
 		// create post object
 		$_p = array();
 		$_p['post_title'] = $page_title;
-		$_p['post_content'] = '';
+		$_p['post_content'] = '<a href="' . $svgeditlink . '" target="_blank">Create New File</a>[gallery ids="SVGList"]';
 		$_p['post_status'] = 'publish';
 		$_p['post_type'] = 'page';
 		$_p['comment_status'] = 'closed';
