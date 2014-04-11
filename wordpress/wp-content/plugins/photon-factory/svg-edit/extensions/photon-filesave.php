@@ -59,6 +59,11 @@ if (count($images)) {
 }
 // this is a new image
 $filename = basename( $title );
+$file_info = pathinfo($filename);
+if (strcasecmp($file_info['extension'], "svg") != 0)
+{
+	$filename = $filename . ".svg";
+}
 $filetype = wp_check_filetype( $filename , null );
 $wp_upload_dir = wp_upload_dir();
 $file_path = $wp_upload_dir['path'] . '/' . $filename;
