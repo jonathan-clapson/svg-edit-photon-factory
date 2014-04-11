@@ -1,10 +1,12 @@
 /*
- * ext-shapes.js
+ * ext-photon_shapes.js
  *
  * Licensed under the MIT License
  *
  * Copyright(c) 2010 Christian Tzurcanu
  * Copyright(c) 2010 Alexis Deveria
+ * Copyright(c) 2014 Photon Factory
+ *                   adapted to load entire svg's rather than single paths
  *
  */
 
