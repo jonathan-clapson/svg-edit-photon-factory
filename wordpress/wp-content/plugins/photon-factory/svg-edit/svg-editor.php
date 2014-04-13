@@ -4,7 +4,7 @@ ob_start();
 
 /* pull in wordpress */
 define('WP_USE_THEMES', false);
-require($_SERVER['DOCUMENT_ROOT']."wordpress/wp-blog-header.php");
+require($_SERVER['DOCUMENT_ROOT']."/wordpress/wp-blog-header.php");
 header("HTTP/1.1 200 OK");
 
 /* check if current user is logged in */
