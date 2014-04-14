@@ -312,9 +312,9 @@ svgEditor.addExtension("shapes", function() {
 				// clone the node so it doesn't disappear from the list
 				cur_shape = g_list[i].cloneNode(true);
 				canv.addSvgElementFromElem(cur_shape);
-				cur_shape.setAttribute('transform', "translate(" + x + "," + y + ") scale(0.005) translate(" + -x + "," + -y + ")");
-				canv.recalculateDimensions(cur_shape);
-				var tlist = canv.getTransformList(cur_shape);
+				cur_shape.setAttribute('transform', "translate(" + x + "," + y + ")");
+				//canv.recalculateDimensions(cur_shape);
+				//var tlist = canv.getTransformList(cur_shape);
 				lastBBox = cur_shape.getBBox();
 			}			
 			
@@ -323,7 +323,7 @@ svgEditor.addExtension("shapes", function() {
 			}
 		},
 		mouseMove: function(opts) {
-			var mode = canv.getMode();
+			/*var mode = canv.getMode();
 			if(mode !== mode_id) return;
 			
 			var zoom = canv.getZoom();
@@ -384,7 +384,7 @@ svgEditor.addExtension("shapes", function() {
 
 			canv.recalculateDimensions(cur_shape);
 			
-			lastBBox = cur_shape.getBBox();
+			lastBBox = cur_shape.getBBox();*/
 		},
 		mouseUp: function(opts) {			
 			var mode = canv.getMode();
