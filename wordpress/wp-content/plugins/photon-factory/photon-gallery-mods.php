@@ -66,15 +66,16 @@ function my_gallery_shortcode( $output = '', $atts, $content = false, $tag = fal
 	
 	/* get the list of images associated with this id */
 	//XXX: Mimetype matching doesn't seem to work???
-	$images = get_posts( array(
+	$filter = array(
 		'post_author' => get_current_user_id(),
 		'post_type' => 'attachment',
 		'numberposts' => -1,
-		'post_status' => null,
-		'post_parent' => null, // any parent
+//		'post_status' => null,
+//		'post_parent' => null, // any parent
 		'post-mime-type' => 'image/svg+xml',
-		)
-	);
+		);
+
+	$images = get_posts( $filter );
 	
 	// construct html
 	$gallery_return = $gallery_style;
@@ -83,10 +84,15 @@ function my_gallery_shortcode( $output = '', $atts, $content = false, $tag = fal
 	$i = 0;
 	//for each image the user has
 	foreach($images as $image) {
+		//for some reason user id is ignored in filter?!
+		if ($image->post_author != get_current_user_id() ) continue;
+		//for some reason mime type is also ignored...
+		if ( strcasecmp($image->post_mime_type, "image/svg+xml") ) continue;
 		$gallery_return .= $gallery_item_start;
 		$gallery_return .= generate_svg_thumbnail($i, $image->post_title, $image->guid);
 		$gallery_return .= $gallery_item_end;
 		//the gallery start string defines 3 columns, so every 3rd picture should have a new line
+
 		$i++;
 		if (!($i%3)) {
 			$gallery_return .= $gallery_new_line;

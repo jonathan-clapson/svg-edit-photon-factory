@@ -65,6 +65,8 @@ if (strcasecmp($file_info['extension'], "svg") != 0)
 	$filename = $filename . ".svg";
 }
 $filetype = wp_check_filetype( $filename , null );
+//wp_check_filetype isn't returning correct mimetype... override it
+$filetype['type'] = 'image/svg+xml';
 $wp_upload_dir = wp_upload_dir();
 $file_path = $wp_upload_dir['path'] . '/' . $filename;
 $file_url = $wp_upload_dir['url'] . '/' . $filename;
