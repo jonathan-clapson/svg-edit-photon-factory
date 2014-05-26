@@ -21,7 +21,6 @@ svgEditor.addExtension("shapes", function() {
 	// This populates the category list
 	var categories = {
 		wells: 'Wells',
-		wells2: 'Wells2',
 	};
 	
 	var library = {
