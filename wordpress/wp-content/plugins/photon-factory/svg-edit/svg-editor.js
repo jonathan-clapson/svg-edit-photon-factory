@@ -48,7 +48,7 @@ var fill_active = 0;
 				dimensions: [130000,130000],
 				initFill: {
 					color: 'FFFFFF',  // solid red
-					opacity: 1
+					opacity: 0
 				},
 				initStroke: {
 					width: 200,
@@ -3589,7 +3589,7 @@ var fill_active = 0;
 				}
 			};
 
-			paintBox.fill = new PaintBox('#fill_color', 'fill');
+			paintBox.fill = new PaintBox('#fill_color', 'none');
 			//paintBox.stroke = new PaintBox('#stroke_color', 'stroke');
 
 			$('#stroke_width').val(curConfig.initStroke.width);
