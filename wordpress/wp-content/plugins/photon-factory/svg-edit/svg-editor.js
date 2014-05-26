@@ -804,7 +804,7 @@ var fill_active = 0;
 
 				// In the event a gradient was flipped:
 				if(selectedElement && mode === "select") {
-					paintBox.fill.update();
+					//paintBox.fill.update();
 					//paintBox.stroke.update();
 				}
 
@@ -886,8 +886,8 @@ var fill_active = 0;
 
 			// Makes sure the current selected paint is available to work with
 			var prepPaints = function() {
-				paintBox.fill.prep();
-				paintBox.stroke.prep();
+				//paintBox.fill.prep();
+				//paintBox.stroke.prep();
 			}
 
 			var flyout_funcs = {};
@@ -1449,13 +1449,13 @@ var fill_active = 0;
 
 						$('#stroke_width').val(gWidth === null ? "" : gWidth);
 
-						paintBox.fill.update(true);
-						paintBox.stroke.update(true);
+						//paintBox.fill.update(true);
+						//paintBox.stroke.update(true);
 
 
 						break;
 					default:
-						paintBox.fill.update(true);
+						//paintBox.fill.update(true);
 						//paintBox.stroke.update(true);
 						//console.log(paintBox.fill);
 
@@ -1998,7 +1998,7 @@ var fill_active = 0;
 					paint = new $.jGraduate.Paint({alpha: 100, solidColor: color.substr(1)});
 				}
 
-				paintBox[picker].setPaint(paint);
+				//paintBox[picker].setPaint(paint);
 
 				if (isStroke) {
 					svgCanvas.setColor('stroke', color);
@@ -3389,10 +3389,10 @@ var fill_active = 0;
 			//       background-image to none.png (otherwise partially transparent gradients look weird)
 			var colorPicker = function(elem) {
 				var picker = elem.attr('id') == 'stroke_color' ? 'stroke' : 'fill';
-				var paint = paintBox[picker].paint;
+				//var paint = paintBox[picker].paint;
 				var pos = elem.offset();
 				
-				if (fill_active == 0) {
+				/*if (fill_active == 0) {
 					paint.type = "solidColor";
 					paint.solidColor = "#FFFFFF";
 					paint.alpha = 100;
@@ -3404,7 +3404,7 @@ var fill_active = 0;
 					paint.alpha = 0;
 					paintBox[picker].setPaint(paint);
 					svgCanvas.setPaint(picker, paint);
-				}
+				}*/
 			};
 
 			var updateToolButtonState = function() {
@@ -3466,140 +3466,13 @@ var fill_active = 0;
 
 
 
-			var PaintBox = function(container, type) {
-				var cur = curConfig[type === 'fill' ? 'initFill' : 'initStroke'];
-
-				// set up gradients to be used for the buttons
-				var svgdocbox = new DOMParser().parseFromString(
-					'<svg xmlns="http://www.w3.org/2000/svg"><rect width="16.5" height="16.5"\
-					fill="#' + cur.color + '" opacity="' + cur.opacity + '"/>\
-					<defs><linearGradient id="gradbox_"/></defs></svg>', 'text/xml');
-				var docElem = svgdocbox.documentElement;
-
-				docElem = $(container)[0].appendChild(document.importNode(docElem, true));
-
-				docElem.setAttribute('width',16.5);
-
-				this.rect = docElem.firstChild;
-				this.defs = docElem.getElementsByTagName('defs')[0];
-				this.grad = this.defs.firstChild;
-				this.paint = new $.jGraduate.Paint({solidColor: cur.color});
-				this.type = type;
-
-				this.setPaint = function(paint, apply) {
-					this.paint = paint;
-
-					var fillAttr = "none";
-					var ptype = paint.type;
-					var opac = paint.alpha / 100;
-
-					switch ( ptype ) {
-						case 'solidColor':
-							fillAttr = (paint[ptype] != 'none') ? "#" + paint[ptype] : paint[ptype];
-							break;
-						case 'linearGradient':
-						case 'radialGradient':
-							this.defs.removeChild(this.grad);
-							this.grad = this.defs.appendChild(paint[ptype]);
-							var id = this.grad.id = 'gradbox_' + this.type;
-							fillAttr = "url(#" + id + ')';
-					}
-					this.rect.setAttribute('fill', fillAttr);					
-					this.rect.setAttribute('opacity', opac);
-					/* FIXME: I'm sure theres a javascript way of doing this but I can't figure out how.This works though :S */
-					if (opac == 0) {
-						fill_active = 0;
-					}
-					else {
-						fill_active = 1;
-					}
-
-					if(apply) {
-						svgCanvas.setColor(this.type, paintColor, true);
-						svgCanvas.setPaintOpacity(this.type, paintOpacity, true);
-					}
-				}
-
-				this.update = function(apply) {
-					if(!selectedElement) return;
-					var type = this.type;
-
-					switch ( selectedElement.tagName ) {
-					case 'use':
-					case 'image':
-					case 'foreignObject':
-						// These elements don't have fill or stroke, so don't change
-						// the current value
-						return;
-					case 'g':
-					case 'a':
-						var gPaint = null;
-
-						var childs = selectedElement.getElementsByTagName('*');
-						for(var i = 0, len = childs.length; i < len; i++) {
-							var elem = childs[i];
-							var p = elem.getAttribute(type);
-							if(i === 0) {
-								gPaint = p;
-							} else if(gPaint !== p) {
-								gPaint = null;
-								break;
-							}
-						}
-						if(gPaint === null) {
-							// No common color, don't update anything
-							var paintColor = null;
-							return;
-						}
-						var paintColor = gPaint;
-
-						var paintOpacity = 1;
-						break;
-					default:
-						var paintOpacity = parseFloat(selectedElement.getAttribute(type + "-opacity"));
-						if (isNaN(paintOpacity)) {
-							paintOpacity = 1.0;
-						}
-
-						var defColor = type === "fill" ? "black" : "none";
-						var paintColor = selectedElement.getAttribute(type) || defColor;
-					}
-
-					if(apply) {
-						svgCanvas.setColor(type, paintColor, true);
-						svgCanvas.setPaintOpacity(type, paintOpacity, true);
-					}
-
-					paintOpacity *= 100;
-
-					var paint = getPaint(paintColor, paintOpacity, type);
-					// update the rect inside #fill_color/#stroke_color
-					this.setPaint(paint);
-				}
-
-				this.prep = function() {
-					var ptype = this.paint.type;
-
-					switch ( ptype ) {
-						case 'linearGradient':
-						case 'radialGradient':
-							var paint = new $.jGraduate.Paint({copy: this.paint});
-							svgCanvas.setPaint(type, paint);
-					}
-				}
-			};
-
-			paintBox.fill = new PaintBox('#fill_color', 'none');
-			//paintBox.stroke = new PaintBox('#stroke_color', 'stroke');
-
+			
 			$('#stroke_width').val(curConfig.initStroke.width);
 			$('#group_opacity').val(curConfig.initOpacity * 100);
 
 			// Use this SVG elem to test vectorEffect support
-			var test_el = paintBox.fill.rect.cloneNode(false);
-			test_el.setAttribute('style','vector-effect:non-scaling-stroke');
-			var supportsNonSS = (test_el.style.vectorEffect === 'non-scaling-stroke');
-			test_el.removeAttribute('style');
+			
+			var supportsNonSS = 0;
 			/*var svgdocbox = paintBox.fill.rect.ownerDocument;
 			// Use this to test support for blur element. Seems to work to test support in Webkit
 			var blur_test = svgdocbox.createElementNS('http://www.w3.org/2000/svg', 'feGaussianBlur');

@@ -444,7 +444,7 @@ if ( get_current_user_id( ) == 0) {
 		<div class="tool_sep"></div>
 	</div>
 
-	<div id="tools_bottom_2">
+<!--	<div id="tools_bottom_2">
 		<div id="color_tools">
 			
 			<div class="color_tool" id="tool_fill">
@@ -456,7 +456,7 @@ if ( get_current_user_id( ) == 0) {
 			</div>			
 		</div>
 
-	</div>
+	</div>-->
 	<!-- <div id="copyright"><span id="copyrightLabel">Powered by</span> <a href="http://svg-edit.googlecode.com/" target="_blank">SVG-edit v2.6-beta</a></div> -->
 </div>
 
