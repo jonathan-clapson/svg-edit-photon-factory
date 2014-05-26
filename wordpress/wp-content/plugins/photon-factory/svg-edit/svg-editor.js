@@ -3898,8 +3898,6 @@ var fill_active = 0;
 					{sel:'#tool_circle', fn: clickCircle, evt: 'mouseup', parent: '#tools_ellipse', icon: 'circle'},
 					{sel:'#tool_fhellipse', fn: clickFHEllipse, evt: 'mouseup', parent: '#tools_ellipse', icon: 'fh_ellipse'},
 					{sel:'#tool_path', fn: clickPath, evt: 'click', key: ['P', true]},
-					{sel:'#tool_text', fn: clickText, evt: 'click', key: ['T', true]},
-					{sel:'#tool_image', fn: clickImage, evt: 'mouseup'},
 					{sel:'#tool_zoom', fn: clickZoom, evt: 'mouseup', key: ['Z', true]},
 					{sel:'#tool_clear', fn: clickClear, evt: 'mouseup', key: ['N', true]},
 					{sel:'#tool_save', fn: function() { editingsource?saveSourceEditor():clickSave()}, evt: 'mouseup', key: ['S', true]},
@@ -3907,7 +3905,6 @@ var fill_active = 0;
 					{sel:'#tool_open', fn: clickOpen, evt: 'mouseup', key: ['O', true]},
 					{sel:'#tool_import', fn: clickImport, evt: 'mouseup'},
 					{sel:'#tool_source', fn: showSourceEditor, evt: 'click', key: ['U', true]},
-					{sel:'#tool_wireframe', fn: clickWireframe, evt: 'click'},
 					{sel:'#tool_source_cancel,#svg_source_overlay,#tool_docprops_cancel,#tool_prefs_cancel', fn: cancelOverlays, evt: 'click', key: ['esc', false, false], hidekey: true},
 					{sel:'#tool_source_save', fn: saveSourceEditor, evt: 'click'},
 					{sel:'#tool_docprops_save', fn: saveDocProperties, evt: 'click'},
@@ -3935,8 +3932,6 @@ var fill_active = 0;
 					// these two lines are required to make Opera work properly with the flyout mechanism
 		// 			{sel:'#tools_rect_show', fn: clickRect, evt: 'click'},
 		// 			{sel:'#tools_ellipse_show', fn: clickEllipse, evt: 'click'},
-					{sel:'#tool_bold', fn: clickBold, evt: 'mousedown'},
-					{sel:'#tool_italic', fn: clickItalic, evt: 'mousedown'},
 					{sel:'#sidepanel_handle', fn: toggleSidePanel, key: ['X']},
 					{sel:'#copy_save_done', fn: cancelOverlays, evt: 'click'},
 
